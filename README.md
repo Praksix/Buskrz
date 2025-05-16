@@ -1,4 +1,4 @@
-# 🎸 Buskrz — Centralisation des concerts à Grenoble
+# 🎸 Buskrz — Centralisation des concerts locaux
 
 **Buskrz** est une application web qui centralise automatiquement les concerts à Grenoble dans une interface claire et accessible.  
 Elle facilite la découverte musicale locale en regroupant les programmations des différentes salles de la ville, jusque-là dispersées.
