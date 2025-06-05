@@ -65,7 +65,7 @@ L'application permet de :
 
 ---
 
-## 🧠 UI UX
+## 🖥️  UI UX
 
 - Charte graphique épurée, couleur chaude avec un dégradé
 - Landing page : mise en avant des concerts et des lieux sponsorisés. On veut l'info avec le moins de clic possible
