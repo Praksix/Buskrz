@@ -65,6 +65,15 @@ L'application permet de :
 
 ---
 
+## 🧠 UI UX
+
+- Charte graphique épurée, couleur chaude avec un dégradé
+- Landing page : mise en avant des concerts et des lieux sponsorisés. On veut l'info avec le moins de clic possible
+- Structure graphique minimaliste, parfait pour développer des features supplémentaires à l'avenir sans avoir à trop réfléchir.
+- Style graphique : Glassmorphisme
+[Liens vers le figma]( https://www.figma.com/design/c3qcKPBkswYAGxr2GqWXdv/Buskrz?node-id=111-263&t=nOEc5lBBDf87NT4E-1)
+---
+
 ## 🚧 En cours de développement
 
 Buskrz est un projet en construction prévu sur 12 mois dans le cadre d’une formation de Concepteur Développeur d’Application à Simplon.
