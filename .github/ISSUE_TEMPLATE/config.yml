@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 Discussions générales
+    url: https://github.com/jericko/Buskrz/discussions
+    about: Posez vos questions générales sur le projet Buskrz
+  - name: 🐛 Signaler un bug
+    url: https://github.com/jericko/Buskrz/issues/new?template=bug_report.yml
+    about: Signalez un problème ou un dysfonctionnement
+  - name: ✨ Demander une fonctionnalité
+    url: https://github.com/jericko/Buskrz/issues/new?template=feature_request.yml
+    about: Proposez une nouvelle fonctionnalité
+  - name: 📚 Améliorer la documentation
+    url: https://github.com/jericko/Buskrz/issues/new?template=documentation.yml
+    about: Améliorez ou ajoutez de la documentation

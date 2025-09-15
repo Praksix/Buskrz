@@ -1,0 +1,121 @@
+name: 🐛 Rapport de bug
+description: Signaler un problème ou un dysfonctionnement dans Buskrz
+title: "[BUG] "
+labels: ["bug", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de prendre le temps de signaler ce bug ! 🎸
+        
+        Veuillez remplir les informations ci-dessous pour nous aider à reproduire et résoudre le problème.
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Description du bug
+      description: Décrivez clairement le problème rencontré
+      placeholder: "Ex: La page des concerts ne se charge pas correctement..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Étapes pour reproduire
+      description: Décrivez les étapes exactes pour reproduire le comportement
+      placeholder: |
+        1. Aller sur la page '...'
+        2. Cliquer sur '...'
+        3. Faire défiler vers '...'
+        4. Voir l'erreur
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Comportement attendu
+      description: Décrivez ce qui devrait se passer
+      placeholder: "La page devrait afficher la liste des concerts..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Comportement actuel
+      description: Décrivez ce qui se passe réellement
+      placeholder: "La page reste blanche et affiche une erreur..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Composant concerné
+      description: Quel composant de l'application est affecté ?
+      options:
+        - Frontend (Client React)
+        - Backend (API Node.js)
+        - Base de données (MongoDB)
+        - Scraping des données
+        - Interface utilisateur
+        - Autre
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Gravité
+      description: Quelle est la gravité de ce bug ?
+      options:
+        - Critique (Application inutilisable)
+        - Élevée (Fonctionnalité majeure cassée)
+        - Moyenne (Fonctionnalité mineure affectée)
+        - Faible (Problème cosmétique)
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environnement
+      description: Informations sur votre environnement
+      placeholder: |
+        - OS: [ex: macOS 14.0, Windows 11, Ubuntu 22.04]
+        - Navigateur: [ex: Chrome 120, Firefox 119, Safari 17]
+        - Version de Node.js: [ex: 18.17.0]
+        - Version de l'application: [ex: v1.2.3]
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Captures d'écran
+      description: Ajoutez des captures d'écran si applicable
+      placeholder: "Glissez-déposez vos images ici ou collez les liens..."
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Contexte supplémentaire
+      description: Toute autre information utile
+      placeholder: "Logs d'erreur, liens vers des issues similaires, etc."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Veuillez cocher les éléments suivants
+      options:
+        - label: J'ai vérifié que ce bug n'a pas déjà été signalé
+          required: true
+        - label: J'ai testé avec la dernière version de l'application
+          required: true
+        - label: J'ai fourni toutes les informations nécessaires
+          required: true

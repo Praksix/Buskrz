@@ -1,0 +1,140 @@
+name: ✨ Demande de fonctionnalité
+description: Proposer une nouvelle fonctionnalité pour améliorer Buskrz
+title: "[FEATURE] "
+labels: ["enhancement", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de proposer cette nouvelle fonctionnalité ! 🎸
+        
+        Votre idée nous aide à améliorer Buskrz pour tous les amateurs de musique locale.
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Description de la fonctionnalité
+      description: Décrivez clairement la fonctionnalité que vous souhaitez voir ajoutée
+      placeholder: "Ex: Ajouter un système de favoris pour sauvegarder les concerts qui nous intéressent..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-solution
+    attributes:
+      label: Problème résolu
+      description: Quel problème cette fonctionnalité résoudrait-elle ?
+      placeholder: "Actuellement, les utilisateurs doivent noter manuellement les concerts qui les intéressent..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Solution proposée
+      description: Décrivez votre solution idéale
+      placeholder: "Ajouter un bouton '❤️' sur chaque concert pour l'ajouter aux favoris..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Composant concerné
+      description: Quel composant de l'application serait affecté ?
+      options:
+        - Frontend (Interface utilisateur)
+        - Backend (API et logique métier)
+        - Base de données (Modèle de données)
+        - Scraping (Collecte de données)
+        - Authentification/Utilisateurs
+        - Notifications/Alertes
+        - Autre
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priorité
+      description: Quelle est la priorité de cette fonctionnalité ?
+      options:
+        - Critique (Fonctionnalité essentielle)
+        - Élevée (Amélioration importante)
+        - Moyenne (Amélioration utile)
+        - Faible (Nice to have)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexité estimée
+      description: Quelle est la complexité de développement estimée ?
+      options:
+        - Simple (quelques heures)
+        - Moyenne (quelques jours)
+        - Complexe (plusieurs semaines)
+        - Très complexe (plusieurs mois)
+    validations:
+      required: true
+
+  - type: textarea
+    id: user-stories
+    attributes:
+      label: User Stories
+      description: Décrivez comment les utilisateurs utiliseraient cette fonctionnalité
+      placeholder: |
+        En tant qu'utilisateur de Buskrz, je veux pouvoir :
+        - Sauvegarder mes concerts favoris
+        - Accéder rapidement à ma liste de favoris
+        - Partager ma liste avec mes amis
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Critères d'acceptation
+      description: Quels sont les critères pour considérer cette fonctionnalité comme terminée ?
+      placeholder: |
+        - [ ] L'utilisateur peut ajouter un concert aux favoris
+        - [ ] L'utilisateur peut voir sa liste de favoris
+        - [ ] L'utilisateur peut supprimer un concert de ses favoris
+        - [ ] Les favoris persistent entre les sessions
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Maquettes/Wireframes
+      description: Ajoutez des maquettes, wireframes ou exemples visuels si vous en avez
+      placeholder: "Glissez-déposez vos images ici ou collez les liens..."
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considérées
+      description: Avez-vous considéré d'autres solutions ?
+      placeholder: "Ex: Au lieu d'un système de favoris, on pourrait utiliser un système de notes..."
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Contexte supplémentaire
+      description: Toute autre information utile
+      placeholder: "Liens vers des exemples d'autres applications, recherches utilisateur, etc."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Veuillez cocher les éléments suivants
+      options:
+        - label: J'ai vérifié que cette fonctionnalité n'a pas déjà été demandée
+          required: true
+        - label: Cette fonctionnalité s'aligne avec la vision de Buskrz
+          required: true
+        - label: J'ai fourni suffisamment de détails pour comprendre la demande
+          required: true

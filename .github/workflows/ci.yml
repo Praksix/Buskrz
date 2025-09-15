@@ -1,0 +1,197 @@
+name: 🚀 CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  NODE_VERSION: '18'
+  JAVA_VERSION: '17'
+
+jobs:
+  # Job pour le frontend (Client React/Next.js)
+  frontend-tests:
+    name: 🎨 Frontend Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+      
+      - name: 📥 Install dependencies
+        run: npm ci
+      
+      - name: 🔍 Lint code
+        run: npm run lint
+      
+      - name: 🧪 Run tests
+        run: npm run test
+      
+      - name: 🏗️ Build application
+        run: npm run build
+      
+      - name: 📊 Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./client/coverage/lcov.info
+          flags: frontend
+          name: frontend-coverage
+
+  # Job pour le backend (API Node.js/Spring Boot)
+  backend-tests:
+    name: ⚙️ Backend Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+      
+      - name: 📦 Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      
+      - name: 🧪 Run tests
+        run: mvn test
+      
+      - name: 🏗️ Build application
+        run: mvn clean package -DskipTests
+      
+      - name: 📊 Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results
+          path: api/target/surefire-reports/
+
+  # Job pour les tests d'intégration
+  integration-tests:
+    name: 🔗 Integration Tests
+    runs-on: ubuntu-latest
+    needs: [frontend-tests, backend-tests]
+    
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+      
+      - name: 🏗️ Build backend
+        run: |
+          cd api
+          mvn clean package -DskipTests
+      
+      - name: 🚀 Start backend
+        run: |
+          cd api
+          java -jar target/*.jar &
+          sleep 30
+        env:
+          MONGODB_URI: mongodb://localhost:27017/buskrz_test
+      
+      - name: 🏗️ Build frontend
+        run: |
+          cd client
+          npm ci
+          npm run build
+      
+      - name: 🧪 Run integration tests
+        run: |
+          cd client
+          npm run test:e2e
+        env:
+          API_URL: http://localhost:8080
+
+  # Job pour la sécurité
+  security-scan:
+    name: 🔒 Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🔍 Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      
+      - name: 📊 Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  # Job pour le déploiement (seulement sur main)
+  deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-latest
+    needs: [frontend-tests, backend-tests, integration-tests, security-scan]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🏗️ Build and deploy frontend
+        run: |
+          cd client
+          npm ci
+          npm run build
+          # Ajouter ici les commandes de déploiement (Netlify, Vercel, etc.)
+      
+      - name: 🏗️ Build and deploy backend
+        run: |
+          cd api
+          mvn clean package -DskipTests
+          # Ajouter ici les commandes de déploiement (Railway, Heroku, etc.)
+      
+      - name: 📢 Notify deployment
+        run: |
+          echo "🚀 Déploiement réussi sur la branche main !"
+          # Ajouter ici une notification (Slack, Discord, etc.)

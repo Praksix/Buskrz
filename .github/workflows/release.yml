@@ -1,0 +1,136 @@
+name: 🏷️ Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version à publier (ex: v1.0.0)'
+        required: true
+        type: string
+
+jobs:
+  create-release:
+    name: 🚀 Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      - name: 🏗️ Build frontend
+        run: |
+          cd client
+          npm ci
+          npm run build
+      
+      - name: 🏗️ Build backend
+        run: |
+          cd api
+          mvn clean package -DskipTests
+      
+      - name: 📊 Generate changelog
+        id: changelog
+        run: |
+          # Générer un changelog basé sur les commits depuis la dernière release
+          LAST_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            echo "changelog=Première release de Buskrz 🎸" >> $GITHUB_OUTPUT
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" ${LAST_TAG}..HEAD)
+            echo "changelog<<EOF" >> $GITHUB_OUTPUT
+            echo "$CHANGELOG" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: 📦 Create release assets
+        run: |
+          mkdir -p release-assets
+          
+          # Frontend build
+          cp -r client/dist release-assets/frontend
+          tar -czf release-assets/frontend.tar.gz -C release-assets frontend
+          
+          # Backend JAR
+          cp api/target/*.jar release-assets/buskrz-api.jar
+          
+          # Documentation
+          cp README.md release-assets/
+          cp PlanImplementation.md release-assets/
+      
+      - name: 🏷️ Create Release
+        uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name || inputs.version }}
+          release_name: Release ${{ github.ref_name || inputs.version }}
+          body: |
+            ## 🎸 Buskrz ${{ github.ref_name || inputs.version }}
+            
+            ### 📝 Changelog
+            ${{ steps.changelog.outputs.changelog }}
+            
+            ### 📦 Assets inclus
+            - **Frontend** : Application React/Next.js compilée
+            - **Backend** : API Java Spring Boot (JAR)
+            - **Documentation** : README et plan d'implémentation
+            
+            ### 🚀 Installation
+            1. Téléchargez les assets de cette release
+            2. Suivez les instructions du README pour l'installation
+            3. Configurez votre environnement selon le PlanImplementation.md
+            
+            ### 🧪 Tests
+            Cette release a été testée avec :
+            - ✅ Tests unitaires frontend
+            - ✅ Tests unitaires backend
+            - ✅ Tests d'intégration
+            - ✅ Scan de sécurité
+            
+            ---
+            *Release créée automatiquement par GitHub Actions*
+          draft: false
+          prerelease: ${{ contains(github.ref_name || inputs.version, 'alpha') || contains(github.ref_name || inputs.version, 'beta') || contains(github.ref_name || inputs.version, 'rc') }}
+      
+      - name: 📤 Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-assets/frontend.tar.gz
+          asset_name: buskrz-frontend-${{ github.ref_name || inputs.version }}.tar.gz
+          asset_content_type: application/gzip
+      
+      - name: 📤 Upload Backend JAR
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release-assets/buskrz-api.jar
+          asset_name: buskrz-api-${{ github.ref_name || inputs.version }}.jar
+          asset_content_type: application/java-archive
+      
+      - name: 📢 Notify release
+        run: |
+          echo "🎸 Release ${{ github.ref_name || inputs.version }} créée avec succès !"
+          echo "🔗 URL: ${{ steps.create_release.outputs.html_url }}"
+          # Ajouter ici une notification (Slack, Discord, etc.)

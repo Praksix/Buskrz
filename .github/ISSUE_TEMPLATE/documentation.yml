@@ -1,0 +1,106 @@
+name: 📚 Documentation
+description: Améliorer ou ajouter de la documentation au projet
+title: "[DOCS] "
+labels: ["documentation", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de contribuer à améliorer la documentation de Buskrz ! 📚
+        
+        Une bonne documentation est essentielle pour la maintenance et l'évolution du projet.
+
+  - type: textarea
+    id: doc-description
+    attributes:
+      label: Description de l'amélioration
+      description: Décrivez ce qui doit être ajouté ou amélioré dans la documentation
+      placeholder: "Ex: Ajouter une section sur l'installation et la configuration de l'environnement de développement..."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Type de documentation
+      description: Quel type de documentation est concerné ?
+      options:
+        - README.md
+        - Documentation API
+        - Guide d'installation
+        - Guide de contribution
+        - Documentation technique
+        - Documentation utilisateur
+        - Code comments
+        - Autre
+    validations:
+      required: true
+
+  - type: dropdown
+    id: doc-priority
+    attributes:
+      label: Priorité
+      description: Quelle est la priorité de cette amélioration ?
+      options:
+        - Critique (Documentation manquante pour une fonctionnalité essentielle)
+        - Élevée (Documentation importante manquante)
+        - Moyenne (Amélioration utile)
+        - Faible (Nice to have)
+    validations:
+      required: true
+
+  - type: textarea
+    id: current-state
+    attributes:
+      label: État actuel
+      description: Décrivez l'état actuel de la documentation concernée
+      placeholder: "La documentation actuelle ne couvre pas l'installation sur Windows..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-changes
+    attributes:
+      label: Changements proposés
+      description: Décrivez les changements que vous proposez
+      placeholder: "Ajouter une section 'Installation sur Windows' avec des captures d'écran..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: target-audience
+    attributes:
+      label: Public cible
+      description: Qui est le public cible de cette documentation ?
+      placeholder: "Développeurs débutants, contributeurs, utilisateurs finaux, administrateurs système..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Exemples
+      description: Avez-vous des exemples ou des références à partager ?
+      placeholder: "Liens vers d'autres projets avec une bonne documentation, exemples de code..."
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Contexte supplémentaire
+      description: Toute autre information utile
+      placeholder: "Liens vers des issues liées, discussions, etc."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Veuillez cocher les éléments suivants
+      options:
+        - label: J'ai vérifié que cette amélioration n'a pas déjà été demandée
+          required: true
+        - label: Cette documentation améliorerait l'expérience des contributeurs/utilisateurs
+          required: true
+        - label: J'ai fourni suffisamment de détails pour comprendre la demande
+          required: true

@@ -1,0 +1,92 @@
+name: 🔄 Dependencies Update
+
+on:
+  schedule:
+    # Exécute tous les lundis à 9h UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: # Permet d'exécuter manuellement
+
+jobs:
+  update-dependencies:
+    name: 📦 Update Dependencies
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      
+      # Mise à jour des dépendances frontend
+      - name: 🔄 Update frontend dependencies
+        run: |
+          cd client
+          npm update
+          npm audit fix
+        continue-on-error: true
+      
+      # Mise à jour des dépendances backend
+      - name: 🔄 Update backend dependencies
+        run: |
+          cd api
+          mvn versions:use-latest-releases
+          mvn versions:commit
+        continue-on-error: true
+      
+      - name: 📊 Check for updates
+        id: check-updates
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "has-updates=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-updates=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: 💾 Commit updates
+        if: steps.check-updates.outputs.has-updates == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "🔄 Update dependencies [skip ci]"
+          git push
+      
+      - name: 📢 Create PR for major updates
+        if: steps.check-updates.outputs.has-updates == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "🔄 Update dependencies"
+          title: "🔄 Mise à jour des dépendances"
+          body: |
+            ## 📦 Mise à jour automatique des dépendances
+            
+            Cette PR contient les mises à jour automatiques des dépendances détectées.
+            
+            ### 🔍 Changements détectés
+            - Mise à jour des packages npm (frontend)
+            - Mise à jour des dépendances Maven (backend)
+            
+            ### ⚠️ Actions requises
+            - [ ] Vérifier que les tests passent
+            - [ ] Tester manuellement les fonctionnalités principales
+            - [ ] Vérifier la compatibilité des nouvelles versions
+            
+            ### 🧪 Tests
+            Les tests automatiques seront exécutés pour vérifier la compatibilité.
+            
+            ---
+            *Cette PR a été créée automatiquement par GitHub Actions*
+          branch: dependencies-update
+          delete-branch: true
