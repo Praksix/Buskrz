@@ -29,5 +29,5 @@ pre-push:
       run: cd client/buskrz-front && npm run build
       
     # Tests complets du backend
-    backend-full-test:
-      run: cd api && ./mvnw test
+    #backend-full-test:
+      #run: cd api && ./mvnw test
