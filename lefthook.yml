@@ -1,0 +1,27 @@
+
+      # Hook qui s'exécute AVANT le commit
+pre-commit:
+  commands:
+
+    # Nom de votre commande (vous choisissez!)
+    commitlint:
+      run: npx commitlint --edit {1}
+      
+    lint:
+      # La commande à exécuter
+      run: cd client && cd buskrz-front && npm run lint
+      
+# Hook qui s'exécute APRÈS le commit réussi
+post-commit:
+  commands:
+    # Autre nom de commande (inventé)
+    celebrate:
+      # Peut être n'importe quelle commande shell
+      run: echo "✅ Commit validé!"
+      
+# Hook qui s'exécute AVANT le push
+pre-push:
+  commands:
+    # Encore un nom personnalisé
+    build:
+      run: cd client && cd buskrz-front && npm run build

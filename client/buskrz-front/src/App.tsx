@@ -14,7 +14,7 @@ function App() {
         
 
         <p className="text-white text-center text-sm font-medium mt-10">
-            Site en construction
+            Site en construction, on arrive bientôt !
           </p>
       </div>
     </>
