@@ -60,7 +60,7 @@ function ConnectionTest() {
   }
 
   return (
-    <div className="height-300 width-600 border-1 bg-white/5 shadow-xl border-white-40 rounded-xl p-10">
+    <div className="height-300 width-300 border-1 bg-white/5 shadow-xl border-white-40 rounded-xl p-10">
       <button 
         onClick={testConnection} 
         disabled={status.isLoading}

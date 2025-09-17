@@ -82,9 +82,9 @@ function LocationDetector() {
   }, [])
 
   return (
-    <div className="height-300 width-600 p-10">
+    <div className="height-300 width-600 p-0">
         {status.data && (
-      <h3 className="text-white text-lg font-semibold mb-4"><span className="font-medium">Vous êtes à </span> {status.data.city}</h3>
+      <h3 className="text-white text-xl text-left  font-light mb-4">Vous êtes à <span className="font-medium">{status.data.city}</span></h3>
       )}
       
     </div>
