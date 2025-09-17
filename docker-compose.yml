@@ -1,0 +1,82 @@
+services:
+  # Base de données MongoDB
+  mongodb:
+    image: mongo:7.0
+    container_name: buskrz-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+      - MONGO_INITDB_DATABASE=buskrz
+    volumes:
+      - mongodb_data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    networks:
+      - buskrz-network
+
+  # API Backend Spring Boot
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: buskrz-api
+    
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_DATABASE=buskrz
+      - PORT=8080
+    depends_on:
+      - mongodb
+    networks:
+      - buskrz-network
+
+  ## Service pour la production
+  frontend-prod:
+    build:
+      context: ./client/buskrz-front
+      dockerfile: Dockerfile
+    container_name: buskrz-frontend-prod
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - buskrz-network
+    profiles:
+      - production
+
+  # Service pour le développement avec hot reload
+  frontend-dev:
+    image: node:20-alpine
+    container_name: buskrz-frontend-dev
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./client/buskrz-front:/app
+      - /app/node_modules  # Volume anonyme pour éviter les conflits
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Pour que le hot reload fonctionne dans Docker
+      - WATCHPACK_POLLING=true
+      - VITE_API_URL=http://localhost:8080
+    depends_on:
+      - api
+    networks:
+      - buskrz-network
+    profiles:
+      - development
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  buskrz-network:
+    driver: bridge

@@ -17,7 +17,7 @@ const Header: React.FC = () => {
       <header className="bg-white text-white py-4 shadow-lg sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-8 flex justify-between items-center">
           <div className="logo flex items-center gap-3">
-            <img src="/src/assets/logo.svg" alt="Buskrz" className="h-20 w-auto" />
+            <img src={logo} alt="Buskrz" className="h-20 w-auto" />
     
           </div>
           
