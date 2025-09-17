@@ -2,26 +2,32 @@
       # Hook qui s'exécute AVANT le commit
 pre-commit:
   commands:
-
-    # Nom de votre commande (vous choisissez!)
-    commitlint:
-      run: npx commitlint --edit {1}
+    # Lint du frontend React
+    frontend-lint:
+      run: cd client/buskrz-front && npm run lint
       
-    lint:
-      # La commande à exécuter
-      run: cd client && cd buskrz-front && npm run lint
+    # Tests et compilation du backend Java
+    #backend-test:
+      #run: cd api && ./mvnw test
+      
+    # Compilation du backend Java
+    #backend-compile:
+      #run: cd api && ./mvnw compile
       
 # Hook qui s'exécute APRÈS le commit réussi
 post-commit:
   commands:
-    # Autre nom de commande (inventé)
+    # Message de confirmation
     celebrate:
-      # Peut être n'importe quelle commande shell
-      run: echo "✅ Commit validé!"
+      run: echo "✅ Commit validé avec succès!"
       
 # Hook qui s'exécute AVANT le push
 pre-push:
   commands:
-    # Encore un nom personnalisé
-    build:
-      run: cd client && cd buskrz-front && npm run build
+    # Build complet du frontend
+    frontend-build:
+      run: cd client/buskrz-front && npm run build
+      
+    # Tests complets du backend
+    backend-full-test:
+      run: cd api && ./mvnw test

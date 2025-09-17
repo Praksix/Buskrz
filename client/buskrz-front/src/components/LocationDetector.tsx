@@ -18,6 +18,30 @@ interface LocationStatus {
   error: string | null
 }
 
+interface IpApiCoResponse {
+  ip: string
+  city: string
+  region: string
+  country_name: string
+  country_code: string
+  timezone: string
+  org: string
+  latitude: number
+  longitude: number
+}
+
+interface IpApiComResponse {
+  query: string
+  city: string
+  regionName: string
+  country: string
+  countryCode: string
+  timezone: string
+  isp: string
+  lat: number
+  lon: number
+}
+
 function LocationDetector() {
   const [status, setStatus] = useState<LocationStatus>({
     isLoading: false,
@@ -37,7 +61,7 @@ function LocationDetector() {
       {
         name: 'ipapi.co',
         url: 'https://ipapi.co/json/',
-        parser: (data: any) => ({
+        parser: (data: IpApiCoResponse): LocationData => ({
           ip: data.ip,
           city: data.city,
           region: data.region,
@@ -52,7 +76,7 @@ function LocationDetector() {
       {
         name: 'ip-api.com',
         url: 'http://ip-api.com/json/',
-        parser: (data: any) => ({
+        parser: (data: IpApiComResponse): LocationData => ({
           ip: data.query,
           city: data.city,
           region: data.regionName,
