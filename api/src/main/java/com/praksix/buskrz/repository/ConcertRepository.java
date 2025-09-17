@@ -14,6 +14,5 @@ public interface ConcertRepository extends MongoRepository<Concert, String> {
     public List<Concert> findAllByArtisteIdsContaining(String artisteId);
     public List<Concert> findAllByLieuId(String lieuId);
     public List<Concert> findAllByDate(String date);
-    public List<Concert> findAllByCity(String city);
 
 }
