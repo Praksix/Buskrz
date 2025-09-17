@@ -1,5 +1,6 @@
 package com.praksix.buskrz.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -16,4 +17,11 @@ public interface LieuRepository extends MongoRepository<Lieu, String> {
      * @return un Optional contenant le lieu trouvé ou vide
      */
     Optional<Lieu> findByCity(String city);
+    
+    /**
+     * Trouve tous les lieux d'une ville
+     * @param city la ville à rechercher
+     * @return une liste de tous les lieux de la ville
+     */
+    List<Lieu> findAllByCity(String city);
 }
