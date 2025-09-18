@@ -96,10 +96,19 @@ jobs:
           mvn help:describe -Dplugin=surefire
         if: always()
       
+      - name: ⏳ Wait for MongoDB
+        run: |
+          echo "Waiting for MongoDB to be ready..."
+          sleep 10
+          echo "Testing MongoDB connection..."
+          mongosh --eval "db.adminCommand('ping')" || echo "MongoDB not ready yet"
+        if: always()
+      
       - name: 🧪 Run tests
         run: mvn test -Dtest=**/*Test
         env:
           MONGODB_URI: mongodb://localhost:27017/buskrz_test
+          MONGODB_DATABASE: buskrz_test
       
       - name: 🏗️ Build application
         run: mvn clean package -DskipTests
