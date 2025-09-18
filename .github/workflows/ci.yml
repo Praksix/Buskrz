@@ -107,7 +107,18 @@ jobs:
         run: mvn clean package -DskipTests
       
       - name: 🔍 SonarLint Analysis
-        run: mvn sonar:sonar -Dsonar.organization=default-organization
+        run: |
+          if [ -n "${{ secrets.SONAR_TOKEN }}" ] && [ -n "${{ secrets.SONAR_ORGANIZATION }}" ]; then
+            mvn sonar:sonar \
+              -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
+              -Dsonar.projectKey=buskrz-api \
+              -Dsonar.projectName="Buskrz API"
+          else
+            echo "⚠️ SonarLint analysis skipped - missing SONAR_TOKEN or SONAR_ORGANIZATION secrets"
+            echo "To enable SonarLint analysis, add these secrets to your repository:"
+            echo "- SONAR_TOKEN: Your SonarCloud token"
+            echo "- SONAR_ORGANIZATION: Your SonarCloud organization key"
+          fi
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
