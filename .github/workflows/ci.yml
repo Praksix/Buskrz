@@ -46,7 +46,7 @@ jobs:
         run: npm run build
       
       - name: 📊 Upload coverage reports
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: ./client/coverage/lcov.info
           flags: frontend
@@ -71,7 +71,7 @@ jobs:
           distribution: 'temurin'
       
       - name: 📦 Cache Maven dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
@@ -84,7 +84,7 @@ jobs:
         run: mvn clean package -DskipTests
       
       - name: 📊 Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
@@ -151,6 +151,11 @@ jobs:
 
   # Job pour la sécurité
   security-scan:
+
+    permissions:
+     security-events: write
+     contents: read
+     
     name: 🔒 Security Scan
     runs-on: ubuntu-latest
     
@@ -167,7 +172,7 @@ jobs:
           output: 'trivy-results.sarif'
       
       - name: 📊 Upload Trivy scan results
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
 
