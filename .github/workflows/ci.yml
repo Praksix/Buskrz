@@ -107,7 +107,7 @@ jobs:
         run: mvn clean package -DskipTests
       
       - name: 🔍 SonarLint Analysis
-        run: mvn sonar:sonar
+        run: mvn sonar:sonar -Dsonar.organization=default-organization
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: https://sonarcloud.io
