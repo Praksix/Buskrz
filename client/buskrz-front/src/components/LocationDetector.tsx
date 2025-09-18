@@ -175,9 +175,6 @@ function LocationDetector() {
         <h3 className="text-white text-lg font-semibold mb-4">
           <span className="font-medium">Vous êtes à </span> 
           <span className="font-bold">{status.data.city}</span>
-          {status.data.region && (
-            <span className="text-white text-sm ml-2">({status.data.region})</span>
-          )}
         </h3>
       )}
       
