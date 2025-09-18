@@ -1,6 +1,8 @@
 package com.praksix.buskrz.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -16,6 +18,7 @@ public class User {
     private String email;
     private String password;
     private String role;
+    private List<String> concertsLikes = new ArrayList<>();
     
     @CreatedDate
     private LocalDateTime createdAt;
@@ -27,7 +30,7 @@ public class User {
     public User() {}
 
     // Constructeur avec paramètres
-    public User(String id, String name, String email, String password, String role, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public User(String id, String name, String email, String password, String role, LocalDateTime createdAt, LocalDateTime updatedAt, List<String> concertsLikes) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -35,6 +38,7 @@ public class User {
         this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.concertsLikes = concertsLikes;
     }
 
     // Getters
@@ -66,6 +70,10 @@ public class User {
         return updatedAt;
     }
 
+    public List<String> getConcertsLikes() {
+        return concertsLikes;
+    }
+
     // Setters
     public void setId(String id) {
         this.id = id;
@@ -95,6 +103,10 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public void setConcertsLikes(List<String> concertsLikes) {
+        this.concertsLikes = concertsLikes;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -103,6 +115,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", concertsLikes='" + concertsLikes + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 ", updatedAt='" + updatedAt + '\'' +
                 '}';
