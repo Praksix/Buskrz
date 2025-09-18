@@ -1,5 +1,6 @@
 package com.praksix.buskrz.service;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,36 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getUserById(String id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public void addConcertToLikes(String userId, String concertId) {
+        Optional<User> userOpt = repository.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (!user.getConcertsLikes().contains(concertId)) {
+                user.getConcertsLikes().add(concertId);
+                repository.save(user);
+            }
+        }
+    }
+
+    @Override
+    public void removeConcertFromLikes(String userId, String concertId) {
+        Optional<User> userOpt = repository.findById(userId);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.getConcertsLikes().remove(concertId);
+            repository.save(user);
+        }
+    }
+
+    @Override
+    public List<String> getUserLikedConcerts(String userId) {
+        Optional<User> userOpt = repository.findById(userId);
+        if (userOpt.isPresent()) {
+            return userOpt.get().getConcertsLikes();
+        }
+        return List.of(); // Retourne une liste vide si l'utilisateur n'existe pas
     }
 }

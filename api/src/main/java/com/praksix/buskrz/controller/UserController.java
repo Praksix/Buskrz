@@ -1,7 +1,9 @@
 package com.praksix.buskrz.controller;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.praksix.buskrz.model.Concert;
 import com.praksix.buskrz.model.User;
+import com.praksix.buskrz.service.ConcertService;
 import com.praksix.buskrz.service.UserService;
 
 
@@ -26,6 +30,9 @@ public class UserController {
     
     @Autowired
     UserService userService;
+    
+    @Autowired
+    ConcertService concertService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -60,6 +67,30 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void deleteAllUsers() {
         userService.deleteAllUsers();
+    }
+
+    // Endpoints pour gérer les concertsLikes
+    @PostMapping("/{userId}/concerts/{concertId}/like")
+    @ResponseStatus(HttpStatus.OK)
+    public void addConcertToLikes(@PathVariable String userId, @PathVariable String concertId) {
+        userService.addConcertToLikes(userId, concertId);
+    }
+
+    @DeleteMapping("/{userId}/concerts/{concertId}/like")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeConcertFromLikes(@PathVariable String userId, @PathVariable String concertId) {
+        userService.removeConcertFromLikes(userId, concertId);
+    }
+
+    @GetMapping("/{userId}/concerts/liked")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Concert> getUserLikedConcerts(@PathVariable String userId) {
+        List<String> concertIds = userService.getUserLikedConcerts(userId);
+        return concertIds.stream()
+                .map(concertId -> concertService.getConcertById(concertId))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
    
     
