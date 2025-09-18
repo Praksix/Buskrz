@@ -113,6 +113,12 @@ jobs:
       - name: 🏗️ Build application
         run: mvn clean package -DskipTests
       
+      - name: 🔍 SonarLint Analysis
+        run: mvn sonar:sonar
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
+      
       - name: 📋 List test results directory
         run: |
           echo "Checking for test results..."
