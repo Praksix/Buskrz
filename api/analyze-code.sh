@@ -24,6 +24,7 @@ mvn jacoco:report
 # Analyse SonarLint (sans serveur SonarQube)
 echo "🔍 Analyse SonarLint locale..."
 mvn sonar:sonar \
+  -Dsonar.organization=default-organization \
   -Dsonar.projectKey=buskrz-api \
   -Dsonar.projectName="Buskrz API" \
   -Dsonar.sources=src/main/java \
