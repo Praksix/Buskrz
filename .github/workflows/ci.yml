@@ -8,7 +8,7 @@ on:
 
 env:
   NODE_VERSION: '18'
-  JAVA_VERSION: '17'
+  JAVA_VERSION: '21'
 
 jobs:
   # Job pour le frontend (Client React/Next.js)
@@ -60,6 +60,17 @@ jobs:
       run:
         working-directory: ./api
     
+    services:
+      mongodb:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
     steps:
       - name: 📥 Checkout code
         uses: actions/checkout@v4
@@ -77,11 +88,28 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       
+      - name: 🔍 List test files
+        run: |
+          echo "Test files found:"
+          find src/test -name "*Test.java" -type f
+          echo "Maven test configuration:"
+          mvn help:describe -Dplugin=surefire
+        if: always()
+      
       - name: 🧪 Run tests
-        run: mvn test
+        run: mvn test -Dtest=**/*Test
+        env:
+          MONGODB_URI: mongodb://localhost:27017/buskrz_test
       
       - name: 🏗️ Build application
         run: mvn clean package -DskipTests
+      
+      - name: 📋 List test results directory
+        run: |
+          echo "Checking for test results..."
+          ls -la target/ || echo "target directory not found"
+          ls -la target/surefire-reports/ || echo "surefire-reports directory not found"
+        if: always()
       
       - name: 📊 Upload test results
         uses: actions/upload-artifact@v4
@@ -89,6 +117,7 @@ jobs:
         with:
           name: test-results
           path: api/target/surefire-reports/
+          if-no-files-found: warn
 
   # Job pour les tests d'intégration
   integration-tests:
