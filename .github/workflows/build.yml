@@ -38,5 +38,5 @@ jobs:
           cd api
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=Praksix_Buskrz \
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }} \
+            -Dsonar.organization=praksix \
             -Dsonar.host.url=https://sonarcloud.io
