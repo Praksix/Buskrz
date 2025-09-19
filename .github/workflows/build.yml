@@ -33,8 +33,10 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
         run: |
           cd api
           mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
             -Dsonar.projectKey=Praksix_Buskrz \
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION || 'default-organization' }}
+            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION || 'default-organization' }} \
+            -Dsonar.host.url=https://sonarcloud.io
