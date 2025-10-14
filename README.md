@@ -83,3 +83,182 @@ Buskrz est un projet en construction prévu sur 12 mois dans le cadre d’une fo
 ## 📜 Licence
 
 Projet open source dans le cadre d’un projet chef-d’œuvre - libre d’usage à but non commercial.
+
+
+## 🚀 Installation
+
+### Prérequis
+
+Avant de commencer, assurez-vous d'avoir installé :
+
+- **Docker** et **Docker Compose** (méthode recommandée)
+- **Java 21** (pour le développement backend)
+- **Node.js 20+** et **npm** (pour le développement frontend)
+- **Maven 3.6+** (pour le backend Spring Boot)
+
+### Méthode 1 : Installation avec Docker (Recommandée)
+
+Cette méthode lance l'ensemble du projet avec Docker Compose.
+
+#### 1. Cloner le projet
+```bash
+git clone <url-du-repo>
+cd Buskrz
+```
+
+#### 2. Configuration de l'environnement
+Créez un fichier `.env` à la racine du projet :
+```bash
+# MongoDB
+MONGODB_URI=mongodb://admin:password123@localhost:27017/buskrz?authSource=admin
+
+# API Backend
+SPRING_PROFILES_ACTIVE=docker
+```
+
+#### 3. Lancement avec Docker Compose
+
+**Pour le développement :**
+```bash
+# Lancer tous les services (MongoDB + API + Frontend en mode dev)
+docker-compose --profile development up -d
+
+# Vérifier que tous les services sont actifs
+docker-compose ps
+```
+
+**Pour la production :**
+```bash
+# Lancer en mode production
+docker-compose --profile production up -d
+```
+
+#### 4. Accès aux services
+- **Frontend (développement)** : http://localhost:5173
+- **Frontend (production)** : http://localhost:3000
+- **API Backend** : http://localhost:8080
+- **MongoDB** : localhost:27017
+
+#### 5. Arrêt des services
+```bash
+# Arrêter tous les services
+docker-compose down
+
+# Arrêter et supprimer les volumes (ATTENTION : supprime les données)
+docker-compose down -v
+```
+
+### Méthode 2 : Installation manuelle (Développement)
+
+Cette méthode permet de développer avec hot-reload sur le frontend.
+
+#### 1. Base de données MongoDB
+
+**Option A : Avec Docker (recommandé)**
+```bash
+# Lancer seulement MongoDB
+docker-compose up -d mongodb
+```
+
+**Option B : Installation locale**
+- Installer MongoDB 7.0+
+- Créer une base de données `buskrz`
+- Configurer l'utilisateur admin
+
+#### 2. Backend Spring Boot
+
+```bash
+# Aller dans le dossier API
+cd api
+
+# Installer les dépendances Maven
+./mvnw clean install
+
+# Lancer l'application
+./mvnw spring-boot:run
+
+# Ou avec Maven installé globalement
+mvn spring-boot:run
+```
+
+L'API sera disponible sur http://localhost:8080
+
+#### 3. Frontend React/Vite
+
+```bash
+# Aller dans le dossier frontend
+cd client/buskrz-front
+
+# Installer les dépendances
+npm install
+
+# Lancer en mode développement
+npm run dev
+```
+
+Le frontend sera disponible sur http://localhost:5173
+
+### 🔧 Commandes utiles
+
+#### Tests
+```bash
+# Tests backend (dans le dossier api/)
+./mvnw test
+
+# Tests frontend (dans le dossier client/buskrz-front/)
+npm run test
+npm run test:coverage
+```
+
+#### Build
+```bash
+# Build backend
+cd api && ./mvnw clean package
+
+# Build frontend
+cd client/buskrz-front && npm run build
+```
+
+#### Logs Docker
+```bash
+# Voir les logs de tous les services
+docker-compose logs -f
+
+# Logs d'un service spécifique
+docker-compose logs -f api
+docker-compose logs -f frontend-dev
+```
+
+### 🐛 Dépannage
+
+#### Problèmes courants
+
+**Port déjà utilisé :**
+```bash
+# Vérifier les ports utilisés
+lsof -i :8080  # API
+lsof -i :5173  # Frontend dev
+lsof -i :3000  # Frontend prod
+lsof -i :27017 # MongoDB
+```
+
+**Problème de connexion MongoDB :**
+- Vérifier que MongoDB est bien démarré
+- Vérifier les credentials dans le fichier `.env`
+- Vérifier la configuration dans `application.properties`
+
+**Problème de CORS :**
+- L'API est configurée pour accepter les requêtes depuis le frontend
+- Vérifier que l'URL du frontend correspond à la configuration CORS
+
+#### Reset complet
+```bash
+# Arrêter et supprimer tout
+docker-compose down -v
+docker system prune -f
+
+# Relancer
+docker-compose --profile development up -d
+```
+
+---
