@@ -46,10 +46,8 @@ L'application permet de :
 - `Axios` ou `SWR` pour les requêtes API
 
 ### Backend
-- `Node.js` (API REST ou API Routes de Next.js)
-- `Cheerio` / `Puppeteer` pour le scraping
-- `OpenAI API` (ou modèle local) pour l’analyse sémantique assistée
-- `Node-cron` pour automatiser les scrapes réguliers
+- `JAVA` (API REST)
+
 
 ### Base de données
 - `MongoDB Atlas` (NoSQL)
