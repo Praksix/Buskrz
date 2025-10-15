@@ -7,7 +7,7 @@
 
 #root {
   margin: 0 auto;
- height: 100vh;
+ height: auto;
   text-align: center;
   background: #968484;
   font-family: 'IBM Plex Sans', sans-serif;

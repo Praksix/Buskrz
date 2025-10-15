@@ -32,23 +32,23 @@ function ConnectionTest() {
         const data = await response.json()
         setStatus({
           isLoading: false,
-          message: `✅ Connexion réussie ! ${data.message || 'Backend opérationnel'}`,
+          message: `Connexion réussie ! ${data.message || 'Backend opérationnel'}`,
           isSuccess: true
         })
       } else {
         setStatus({
           isLoading: false,
-          message: `❌ Erreur serveur (${response.status}): ${response.statusText}`,
+          message: `Erreur serveur (${response.status}): ${response.statusText}`,
           isSuccess: false
         })
       }
     } catch (error) {
-      let errorMessage = '❌ Connexion échouée'
+      let errorMessage = 'Connexion échouée'
       
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        errorMessage = '❌ Serveur non accessible - Vérifiez que le backend est démarré sur le port 8080'
+        errorMessage = 'Serveur non accessible - Vérifiez que le backend est démarré sur le port 8080'
       } else if (error instanceof Error) {
-        errorMessage = `❌ Erreur: ${error.message}`
+        errorMessage = `Erreur: ${error.message}`
       }
 
       setStatus({

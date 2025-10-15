@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
 
 const Header: React.FC = () => {
@@ -36,12 +37,12 @@ const Header: React.FC = () => {
           <nav className="hidden xl:block">
             <ul className="flex list-none m-0 p-0 gap-6">
               <li>
-                <a 
-                  href="#accueil" 
+                <Link 
+                  to="/" 
                   className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
                 >
                   Accueil
-                </a>
+                </Link>
               </li>
               <li>
                 <a 
@@ -76,12 +77,12 @@ const Header: React.FC = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#addConcert"
+                <Link 
+                  to="/add-concert"
                   className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
                 >
                   Ajouter un concert
-                </a>
+                </Link>
               </li>
               
             </ul>
@@ -117,13 +118,13 @@ const Header: React.FC = () => {
           <nav>
             <ul className="space-y-6">
               <li>
-                <a 
-                  href="#accueil" 
+                <Link 
+                  to="/" 
                   onClick={closeMenu}
                   className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
                 >
                   Accueil
-                </a>
+                </Link>
               </li>
               <li>
                 <a 
@@ -162,13 +163,13 @@ const Header: React.FC = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#addConcert"
+                <Link 
+                  to="/add-concert"
                   onClick={closeMenu}
                   className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
                 >
                   Ajouter un concert
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>

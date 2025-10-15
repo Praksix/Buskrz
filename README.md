@@ -43,15 +43,13 @@ L'application permet de :
 ### Frontend
 - `Next.js` (React)
 - `Tailwind CSS` + `ShadCN UI`
-- `Axios` ou `SWR` pour les requêtes API
 
 ### Backend
-- `JAVA` (API REST)
-
+- `Java SpringBoot`
 
 ### Base de données
-- `MongoDB Atlas` (NoSQL)
-  - Relations : `Concert`, `Artiste`, `Salle`, `Utilisateur`, `Alerte`, `SourceScraping`
+- `MongoDB` (NoSQL)
+  - Relations : `Concert`, `Artiste`, `Salle`, `Utilisateur`, `Alerte`
 
 ---
 
@@ -59,7 +57,7 @@ L'application permet de :
 
 - **Concert** a lieu dans une **Salle** et met en scène un ou plusieurs **Artistes**
 - Un **Utilisateur** peut créer des **Alertes** personnalisées
-- Chaque concert peut être associé à une **SourceScraping** (optionnelle)
+
 
 ---
 

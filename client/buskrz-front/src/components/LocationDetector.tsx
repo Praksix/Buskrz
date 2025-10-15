@@ -18,6 +18,11 @@ interface LocationStatus {
   error: string | null
 }
 
+// 🆕 Props pour recevoir le callback du composant parent
+interface LocationDetectorProps {
+  onLocationDetected?: (city: string) => void  // Fonction appelée quand la ville est détectée
+}
+
 interface IpApiCoResponse {
   ip: string
   city: string
@@ -42,7 +47,7 @@ interface IpApiComResponse {
   lon: number
 }
 
-function LocationDetector() {
+function LocationDetector({ onLocationDetected }: LocationDetectorProps = {}) {
   const [status, setStatus] = useState<LocationStatus>({
     isLoading: false,
     data: null,
@@ -128,6 +133,12 @@ function LocationDetector() {
           data: locationData,
           error: null
         })
+        
+        // 🆕 Appeler le callback pour informer le parent de la ville détectée
+        if (onLocationDetected && locationData.city) {
+          onLocationDetected(locationData.city)
+        }
+        
         return // Succès, on sort de la boucle
         
       } catch (error) {
