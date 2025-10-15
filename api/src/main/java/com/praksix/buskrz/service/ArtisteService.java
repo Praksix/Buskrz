@@ -16,6 +16,7 @@ public interface ArtisteService {
     public void deleteArtiste(String id);
     public void deleteAllArtistes();
     public Optional<Artiste> getArtisteById(String id);
+    public Artiste findOrCreateArtiste(String name, String genre);
     
 
 
