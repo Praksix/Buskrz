@@ -43,9 +43,8 @@ que les pensées.</h2>
       {detectedCity && (
         <button
           onClick={goToConcertsInMyCity}
-          className="w-full bg-[#CE5526] hover:bg-[#A84320] text-white font-bold py-4 px-6 rounded-lg transition-all shadow-lg flex items-center justify-center gap-2"
+          className="w-full bg-[#CE5526] hover:text-[#A84320] bg-white text-[#CE5526]font-bold py-4 px-6 rounded-lg transition-all shadow-lg flex items-center justify-center gap-2"
         >
-          <span>🎵</span>
           <span>Voir les concerts à {detectedCity}</span>
           <span>→</span>
         </button>

@@ -8,6 +8,7 @@
 #root {
   margin: 0 auto;
  height: auto;
+ min-height: 100vh;
   text-align: center;
   background: #968484;
   font-family: 'IBM Plex Sans', sans-serif;
