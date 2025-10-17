@@ -139,6 +139,28 @@ function ConcertsByCity() {
     return artistesMap
   }
 
+  // Fonction pour formater l'heure sans les secondes (HH:MM)
+  const formatTime = (timeString: string): string => {
+    if (!timeString) return ''
+    // Si le format est "HH:MM:SS", on prend seulement "HH:MM"
+    if (timeString.includes(':')) {
+      const parts = timeString.split(':')
+      return `${parts[0]}:${parts[1]}`
+    }
+    return timeString
+  }
+
+  // Fonction pour formater la date de YYYY-MM-DD vers DD.MM.YYYY
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return ''
+    // Si le format est "YYYY-MM-DD", on le convertit en "DD.MM.YYYY"
+    if (dateString.includes('-') && dateString.split('-').length === 3) {
+      const parts = dateString.split('-')
+      return `${parts[2]}.${parts[1]}.${parts[0]}`
+    }
+    return dateString
+  }
+
   // 🎯 ÉTAPE 3 : Récupérer les concerts quand le composant se charge
   // useEffect se déclenche quand 'ville' change
   useEffect(() => {
@@ -225,21 +247,28 @@ function ConcertsByCity() {
 
         {/* Affichage de la liste des concerts */}
         {!isLoading && !error && concerts.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-6xl">
             {concerts.map((concert) => (
               <div 
                 key={concert.id} 
-                className="bg-white/5 border border-white/40 rounded-xl p-6 shadow-xl hover:bg-white/10 transition-all cursor-pointer"
+                className="bg-white/5 border border-white/40 rounded-xl  shadow-xl hover:bg-white/10 transition-all cursor-pointer"
               >
-                {/* Titre du concert */}
-                <img src={illusImage} alt={concert.name} className="w-full h-48 object-cover rounded-t-xl mb-3" />
-                <h2 className="text-white text-2xl font-thin mb-3">
-                  {concert.name}
-                </h2>
+                {/* Layout avec image à gauche et contenu à droite */}
+                <div className="flex gap-4 h-full">
+                  {/* Image à gauche */}
+                  <div className="flex-shrink-0 h-full">
+                    <img src={illusImage} alt={concert.name} className="w-30 h-full object-cover rounded-lg sm:w-70" />
+                  </div>
+                  
+                  {/* Contenu à droite */}
+                  <div className="flex-1">
+                    <h2 className="text-white text-2xl pt-3 text-left font-thin pr-2 mb-0">
+                      {concert.name}
+                    </h2>
                 
                 {/* Noms des artistes */}
-                <div className="mb-1">
-                  <div className="flex items-center gap-2 mb-0">
+                <div className="mb-0">
+                  <div className="flex items-center gap-2 mb-0 px-0">
         
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -248,7 +277,7 @@ function ConcertsByCity() {
                       return (
                         <span 
                           key={artisteId}
-                          className="  text-white px-3 py-1 text-5xl font-light"
+                          className="  text-white text-left md:text-4xl text-lg py-1 text-5xl pr-2 font-medium mt-0 mb-0"
                         >
                           {artiste ? artiste.name : `Artiste ${index + 1}`}
                         </span>
@@ -256,8 +285,8 @@ function ConcertsByCity() {
                     })}
                   </div>
                 </div>
-                <div className="mb-3">
-                  <div className="flex items-center gap-2 mb-2">
+                <div className="mb-0">
+                  <div className="flex items-center gap-2">
         
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -266,7 +295,7 @@ function ConcertsByCity() {
                       return (
                         <span 
                           key={artisteId}
-                          className="  text-white italic text-2xl font-thin"
+                          className="  text-white italic text-xl pr-2font-thin"
                         >
                           {artiste ? artiste.genres : `Artiste ${index + 1}`}
                         </span>
@@ -275,49 +304,21 @@ function ConcertsByCity() {
                   </div>
                 </div>
                 
-                {/* Lieu du concert */}
-                <div className="mb-3">
-                 
-                  <div className="flex flex-wrap gap-2">
-                    {(() => {
-                      const lieu = lieux.get(concert.lieuId)
-                      return (
-                        <span className="border border-white/40 text-white px-3 py-1 rounded-full text-sm font-medium">
-                          {lieu ? lieu.name : `Lieu ${concert.lieuId}`}
-                        </span>
-                      )
-                    })()}
-                  </div>
-                </div>
                 
-                {/* Date et heure */}
-                <div className="flex items-center gap-2 mb-2">
-                  
-                  <p className="text-white/80">
-                    {new Date(concert.date).toLocaleDateString('fr-FR', {
-                      weekday: 'long',
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </p>
-                </div>
                 
-                {/* Heure */}
-                {concert.time && (
-                  <div className="flex items-center gap-2 mb-2">
+                  {/* Date et heure */}
+                  <div className="flex items-center gap-2">
                     
-                    <p className="text-white/80">{concert.time}</p>
+                    <p className="text-white/80 text-left"> {concert ? formatDate(concert.date) : `Concert paq trouvé`}</p><p className='text-white'>/</p><p className="text-white/80 pr-2">{formatTime(concert.time)}</p>
                   </div>
-                )}
                 
-                {/* Prix */}
+                {/* Prix 
                 {concert.prix && (
                   <div className="flex items-center gap-2 mb-2">
                     
                     <p className="text-white/80">{concert.prix}€</p>
                   </div>
-                )}
+                )}*/}
                 
                 {/* Description 
                 //{concert.description && (
@@ -325,7 +326,20 @@ function ConcertsByCity() {
                     {concert.description}
                   </p>
                 )}*/}
-                
+                {/* Lieu du concert */}
+                <div className="mb-3">
+                 
+                  <div className="flex flex-wrap gap-2">
+                    {(() => {
+                      const lieu = lieux.get(concert.lieuId)
+                      return (
+                        <span className="text-white italic  text-sm font-thin">
+                          {lieu ? lieu.name : `Lieu ${concert.lieuId}`}
+                        </span>
+                      )
+                    })()}
+                  </div>
+                </div>
                 
                 {/* Lien vers plus d'infos */}
                 {concert.lien && (
@@ -338,6 +352,8 @@ function ConcertsByCity() {
                     Plus d'infos →
                   </a>
                 )}
+                  </div>
+                </div>
               </div>
             ))}
           </div>
