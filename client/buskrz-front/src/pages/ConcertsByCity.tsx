@@ -239,7 +239,7 @@ function ConcertsByCity() {
                 
                 {/* Noms des artistes */}
                 <div className="mb-1">
-                  <div className="flex items-center gap-2 mb-0">
+                  <div className="flex items-center gap-2 mb-0 px-0">
         
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -248,7 +248,7 @@ function ConcertsByCity() {
                       return (
                         <span 
                           key={artisteId}
-                          className="  text-white px-3 py-1 text-5xl font-light"
+                          className="  text-white py-1 text-5xl font-light"
                         >
                           {artiste ? artiste.name : `Artiste ${index + 1}`}
                         </span>
@@ -257,7 +257,7 @@ function ConcertsByCity() {
                   </div>
                 </div>
                 <div className="mb-3">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2">
         
                   </div>
                   <div className="flex flex-wrap gap-2">
@@ -291,7 +291,7 @@ function ConcertsByCity() {
                 </div>
                 
                 {/* Date et heure */}
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2">
                   
                   <p className="text-white/80">
                     {new Date(concert.date).toLocaleDateString('fr-FR', {
@@ -305,7 +305,7 @@ function ConcertsByCity() {
                 
                 {/* Heure */}
                 {concert.time && (
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2">
                     
                     <p className="text-white/80">{concert.time}</p>
                   </div>
