@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import Header from '../components/Header'
 import illusImage from '../assets/illus.jpg'
+import CitySearch from '../components/CitySearch'
 
 // Interface qui correspond au modèle Concert.java du backend
 interface Concert {
@@ -42,7 +43,7 @@ function ConcertsByCity() {
   const [artistes, setArtistes] = useState<Map<string, Artiste>>(new Map())
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [error, setError] = useState<string>('')
-
+  const [isCityModalOpen, setIsCityModalOpen] = useState<boolean>(false)
   // Fonction pour récupérer les détails d'un artiste par son ID
   const fetchArtisteById = async (artisteId: string): Promise<Artiste | null> => {
     try {
@@ -138,6 +139,8 @@ function ConcertsByCity() {
 
     return artistesMap
   }
+  const openCityModal = () => setIsCityModalOpen(true)
+  const closeCityModal = () => setIsCityModalOpen(false)
 
   // Fonction pour formater l'heure sans les secondes (HH:MM)
   const formatTime = (timeString: string): string => {
@@ -220,9 +223,17 @@ function ConcertsByCity() {
       <div className="flex flex-col items-center justify-center w-full m-auto p-10">
         
         {/* Titre avec le nom de la ville */}
-        <h1 className="text-white text-5xl font-thin mb-10">
+        <h1 className="text-white text-5xl font-thin mb-5">
           Concerts à {ville}
         </h1>
+
+        <button
+        type="button"
+        onClick={openCityModal}
+        className="text-white text-sm font-medium underline underline-offset-4 hover:text-white/80 transition-colors"
+      >
+        Changer de ville
+      </button>
 
         {/* Affichage pendant le chargement */}
         {isLoading && (
@@ -240,7 +251,7 @@ function ConcertsByCity() {
 
         {/* Affichage quand il n'y a pas de concerts */}
         {!isLoading && !error && concerts.length === 0 && (
-          <div className="text-white text-xl">
+          <div className="text-white text-xl mt-50">
             Aucun concert trouvé à {ville}
           </div>
         )}
@@ -359,6 +370,33 @@ function ConcertsByCity() {
           </div>
         )}
       </div>
+
+      {isCityModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+          role="dialog"
+          aria-modal="true"
+          onClick={closeCityModal}
+        >
+          <div
+            className="relative w-full max-w-lg"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="absolute -top-10 right-0">
+              <button
+                type="button"
+                onClick={closeCityModal}
+                className="text-white/80 hover:text-white transition-colors text-2xl"
+                aria-label="Fermer la modale"
+              >
+                x
+              </button>
+            </div>
+
+            <CitySearch onCitySelected={closeCityModal} />
+          </div>
+        </div>
+      )}
     </>
   )
 }

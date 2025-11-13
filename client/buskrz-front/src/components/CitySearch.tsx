@@ -1,5 +1,10 @@
 import { useState } from 'react'
+import type { KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+interface CitySearchProps {
+  onCitySelected?: () => void
+}
 
 /**
  * 🎓 COMPOSANT DE RECHERCHE DE CONCERTS PAR VILLE
@@ -7,7 +12,7 @@ import { useNavigate } from 'react-router-dom'
  * Ce composant montre comment naviguer vers une route dynamique
  * en utilisant une valeur saisie par l'utilisateur.
  */
-function CitySearch() {
+function CitySearch({ onCitySelected }: CitySearchProps) {
   // État pour stocker la ville saisie par l'utilisateur
   const [ville, setVille] = useState<string>('')
   
@@ -18,6 +23,11 @@ function CitySearch() {
    * Fonction qui s'exécute quand l'utilisateur clique sur "Rechercher"
    * Elle navigue vers /concerts/[nom-de-la-ville]
    */
+  const handleNavigate = (targetCity: string) => {
+    navigate(`/concerts/${targetCity}`)
+    onCitySelected?.()
+  }
+
   const handleSearch = () => {
     // Vérifier que la ville n'est pas vide
     if (ville.trim() === '') {
@@ -27,13 +37,13 @@ function CitySearch() {
 
     // 🎯 Navigation vers la route dynamique
     // Si ville = "Paris", on navigue vers /concerts/Paris
-    navigate(`/concerts/${ville}`)
+    handleNavigate(ville)
   }
 
   /**
    * Fonction pour gérer la touche "Entrée" dans l'input
    */
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       handleSearch()
     }
@@ -42,7 +52,7 @@ function CitySearch() {
   return (
     <div className="bg-white/5 border border-white/40 rounded-xl p-6 shadow-xl w-full max-w-md">
       <h3 className="text-white text-2xl font-bold mb-4">
-        🔍 Rechercher des concerts
+        Rechercher des concerts
       </h3>
       
       <div className="flex flex-col gap-4">
@@ -72,7 +82,7 @@ function CitySearch() {
           {['Paris', 'Lyon', 'Marseille', 'Toulouse', 'Bordeaux'].map((cityName) => (
             <button
               key={cityName}
-              onClick={() => navigate(`/concerts/${cityName}`)}
+              onClick={() => handleNavigate(cityName)}
               className="text-sm px-3 py-1 rounded-full bg-white/10 text-white hover:bg-white/20 transition-all"
             >
               {cityName}
