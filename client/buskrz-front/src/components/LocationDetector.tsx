@@ -174,7 +174,7 @@ function LocationDetector({ onLocationDetected }: LocationDetectorProps = {}) {
   }, [])
 
   return (
-    <div className="height-300 width-600 p-10">
+    <div className="height-300 width-1000 backdrop-blur p-4 pb-2 vertical-align:middle pl-40 pr-40 pt-5 pb-5">
       {status.isLoading && (
         <div className="flex items-center space-x-2">
           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -183,9 +183,9 @@ function LocationDetector({ onLocationDetected }: LocationDetectorProps = {}) {
       )}
       
       {status.data && (
-        <h3 className="text-white text-lg font-semibold mb-4">
-          <span className="font-medium">Vous êtes à </span> 
-          <span className="font-bold">{status.data.city}</span>
+        <h3 className="text-white text-lg font-semibold mb-1">
+          <span className="font-thin italic">Vous êtes à </span> 
+          <span className="font-light italic">{status.data.city}</span>
         </h3>
       )}
       
