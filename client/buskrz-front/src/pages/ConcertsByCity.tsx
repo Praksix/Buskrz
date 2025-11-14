@@ -44,6 +44,7 @@ function ConcertsByCity() {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [error, setError] = useState<string>('')
   const [isCityModalOpen, setIsCityModalOpen] = useState<boolean>(false)
+  const [searchTerm, setSearchTerm] = useState<string>('')
   // Fonction pour récupérer les détails d'un artiste par son ID
   const fetchArtisteById = async (artisteId: string): Promise<Artiste | null> => {
     try {
@@ -216,6 +217,33 @@ function ConcertsByCity() {
     
   }, [ville]) // ⚠️ IMPORTANT : Le useEffect se relance quand 'ville' change
 
+  const normalizedTerm = searchTerm.trim().toLowerCase()
+  const filteredConcerts = concerts.filter((concert) => {
+    if (!normalizedTerm) {
+      return true
+    }
+
+    const concertNameMatch = concert.name.toLowerCase().includes(normalizedTerm)
+    const lieuName = lieux.get(concert.lieuId)?.name?.toLowerCase() ?? ''
+    const lieuMatch = lieuName.includes(normalizedTerm)
+
+    const artistesMatch = concert.artisteIds.some((artisteId) => {
+      const artiste = artistes.get(artisteId)
+      if (!artiste) {
+        return false
+      }
+
+      const artisteNameMatch = artiste.name.toLowerCase().includes(normalizedTerm)
+      const genreMatch = artiste.genres?.some((genre) =>
+        genre.toLowerCase().includes(normalizedTerm)
+      )
+
+      return artisteNameMatch || genreMatch
+    })
+
+    return concertNameMatch || lieuMatch || artistesMatch
+  })
+
   // 🎯 ÉTAPE 6 : Affichage conditionnel selon l'état
   return (
     <>
@@ -230,10 +258,40 @@ function ConcertsByCity() {
         <button
         type="button"
         onClick={openCityModal}
-        className="text-white text-sm font-medium underline underline-offset-4 hover:text-white/80 transition-colors"
+        className="text-white text-sm font-medium underline underline-offset-4 hover:text-white/80 transition-colors mb-20"
       >
         Changer de ville
       </button>
+
+        <div className="w-full max-w-4xl mb-12">
+          <label htmlFor="concert-search" className="sr-only">
+            Rechercher un concert
+          </label>
+          <div className="relative">
+            <input
+              id="concert-search"
+              type="search"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+              placeholder="Rechercher par concert, artiste, genre ou lieu"
+              className="w-full rounded-lg border border-white/20 bg-white/10 py-3 pl-4 pr-12 text-white placeholder:text-white/60 focus:outline-none focus:ring-2 focus:ring-[#CE5526]"
+            />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-white/60"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <line x1="20" y1="20" x2="16.65" y2="16.65" />
+            </svg>
+          </div>
+        </div>
 
         {/* Affichage pendant le chargement */}
         {isLoading && (
@@ -257,9 +315,15 @@ function ConcertsByCity() {
         )}
 
         {/* Affichage de la liste des concerts */}
-        {!isLoading && !error && concerts.length > 0 && (
+        {!isLoading && !error && concerts.length > 0 && filteredConcerts.length === 0 && (
+          <div className="text-white text-xl mt-10">
+            Aucun concert ne correspond à votre recherche.
+          </div>
+        )}
+
+        {!isLoading && !error && filteredConcerts.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6 w-full max-w-6xl">
-            {concerts.map((concert) => (
+            {filteredConcerts.map((concert) => (
               <div 
                 key={concert.id} 
                 className="bg-white/5 border border-white/40 rounded-xl  shadow-xl hover:bg-white/10 transition-all cursor-pointer"

@@ -69,12 +69,12 @@ const Header: React.FC = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#AddLieu" 
+                <Link 
+                  to="/add-lieu" 
                   className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
                 >
                   Ajouter un lieu
-                </a>
+                </Link>
               </li>
               <li>
                 <Link 
@@ -154,13 +154,13 @@ const Header: React.FC = () => {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#AddLieu" 
+                <Link 
+                  to="/add-lieu" 
                   onClick={closeMenu}
                   className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
                 >
                   Ajouter un lieu
-                </a>
+                </Link>
               </li>
               <li>
                 <Link 
