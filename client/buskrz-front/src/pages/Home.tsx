@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import ConnectionTest from '../components/ConnectionTest'
@@ -10,15 +10,15 @@ function Home() {
   // 🎯 ÉTAPE 1 : Créer un état pour stocker la ville détectée
   const [detectedCity, setDetectedCity] = useState<string | null>(null)
   const [isCityModalOpen, setIsCityModalOpen] = useState<boolean>(false)
-  
+
   // 🎯 ÉTAPE 2 : Hook pour naviguer vers une autre page
   const navigate = useNavigate()
 
   // 🎯 ÉTAPE 3 : Fonction callback appelée quand LocationDetector détecte la ville
-  const handleLocationDetected = (city: string) => {
+  const handleLocationDetected = useCallback((city: string) => {
     console.log('Ville détectée dans Home:', city)
     setDetectedCity(city)
-  }
+  }, [])
 
   // 🎯 ÉTAPE 4 : Fonction pour naviguer vers les concerts de la ville détectée
   const goToConcertsInMyCity = () => {
@@ -49,40 +49,40 @@ function Home() {
 
             <LocationDetector onLocationDetected={handleLocationDetected} />
             {/* 🆕 Bouton pour voir les concerts de ma ville */}
-      {detectedCity && (
-        <button
-          onClick={goToConcertsInMyCity}
-          className="w-1/2 bg-[#CE5526] hover:bg-[#A84320] text-white font-thin py-4 px-6 rounded-lg transition-all shadow-lg flex items-center justify-center gap-2"
-        >
-          <span>Voir les concerts à <span className="font-light">{detectedCity}</span> </span>
-          <span>→</span>
-        </button>
-      )}
+            {detectedCity && (
+              <button
+                onClick={goToConcertsInMyCity}
+                className="w-1/2 bg-[#CE5526] hover:bg-[#A84320] text-white font-thin py-4 px-6 rounded-lg transition-all shadow-lg flex items-center justify-center gap-2"
+              >
+                <span>Voir les concerts à <span className="font-light">{detectedCity}</span> </span>
+                <span>→</span>
+              </button>
+            )}
 
-<button
-        type="button"
-        onClick={openCityModal}
-        className="text-white text-sm font-medium underline underline-offset-4 hover:text-white/80 transition-colors"
-      >
-        Changer de ville
-      </button>
+            <button
+              type="button"
+              onClick={openCityModal}
+              className="text-white text-sm font-medium underline underline-offset-4 hover:text-white/80 transition-colors"
+            >
+              Changer de ville
+            </button>
           </div>
         </section>
 
-<section className="flex flex-col items-center w-full max-w-md gap-4 px-6 py-12">
-      {/* 🆕 Passer le callback au LocationDetector */}
-     
-      
-      
+        <section className="flex flex-col items-center w-full max-w-md gap-4 px-6 py-12">
+          {/* 🆕 Passer le callback au LocationDetector */}
 
-      
-      
-      <ConnectionTest />
-        
-        <p className="text-white text-center text-sm font-medium">
+
+
+
+
+
+          <ConnectionTest />
+
+          <p className="text-white text-center text-sm font-medium">
             Site en construction, on arrive bientôt !
           </p>
-      </section>
+        </section>
       </main>
 
       {isCityModalOpen && (

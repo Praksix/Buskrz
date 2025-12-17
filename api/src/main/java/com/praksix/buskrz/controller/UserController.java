@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.praksix.buskrz.model.Concert;
 import com.praksix.buskrz.model.User;
+import com.praksix.buskrz.repository.UserRepository;
 import com.praksix.buskrz.service.ConcertService;
+import com.praksix.buskrz.service.JwtService;
 import com.praksix.buskrz.service.UserService;
 
 
@@ -33,6 +36,26 @@ public class UserController {
     
     @Autowired
     ConcertService concertService;
+    
+    @Autowired
+    UserRepository userRepository;
+    
+    @Autowired
+    JwtService jwtService;
+
+    @GetMapping("/me")
+    @ResponseStatus(HttpStatus.OK)
+    public User getCurrentUser(@RequestHeader(value = "Authorization", required = false) String authHeader) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new RuntimeException("Token manquant ou invalide");
+        }
+        
+        String token = authHeader.substring(7);
+        String email = jwtService.extractUsername(token);
+        
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
