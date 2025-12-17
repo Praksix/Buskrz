@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 "/api/v1/concerts/**",
                                 "/api/v1/lieux/**",
                                 "/api/v1/artistes/**",
+                                "/api/v1/artist-find-or-create", // Whitelist artist creation endpoint
                                 "/api/v1/auth/register", // Seulement register (pas /auth/**)
                                 "/api/v1/auth/authenticate", // Seulement authenticate (pas /auth/**)
                                 "/api/health/**",
