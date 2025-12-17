@@ -17,6 +17,7 @@ public interface LieuRepository extends MongoRepository<Lieu, String> {
      * @return un Optional contenant le lieu trouvé ou vide
      */
     Optional<Lieu> findByCity(String city);
+    boolean existsByNameIgnoreCase(String name);
     
     /**
      * Trouve tous les lieux d'une ville

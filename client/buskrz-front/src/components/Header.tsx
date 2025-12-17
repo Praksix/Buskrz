@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.svg';
+import { useAuth } from '../contexts/AuthContext';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -13,15 +15,20 @@ const Header: React.FC = () => {
     setIsMenuOpen(false);
   };
 
+  const handleLogout = () => {
+    logout();
+    closeMenu();
+  };
+
   return (
     <>
       <header className="bg-white text-white py-4 shadow-lg sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-8 flex justify-between items-center">
           <div className="logo flex items-center gap-3">
-          <Link to="/"><img src={logo} alt="Buskrz" className="h-20 w-auto" /></Link>
-    
+            <Link to="/"><img src={logo} alt="Buskrz" className="h-20 w-auto" /></Link>
+
           </div>
-          
+
           {/* Burger Menu Button */}
           <button
             onClick={toggleMenu}
@@ -37,54 +44,69 @@ const Header: React.FC = () => {
           <nav className="hidden xl:block">
             <ul className="flex list-none m-0 p-0 gap-6">
               <li>
-                <Link 
-                  to="/" 
+                <Link
+                  to="/"
                   className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
                 >
                   Accueil
                 </Link>
               </li>
-              <li>
-                <a 
-                  href="#services" 
-                  className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
-                >
-                  Se connecter
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#contact" 
-                  className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
-                >
-                  S'inscrire
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#MesConcerts" 
-                  className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
-                >
-                  Mes concerts
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#AddLieu" 
-                  className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
-                >
-                  Ajouter un lieu
-                </a>
-              </li>
-              <li>
-                <Link 
-                  to="/add-concert"
-                  className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
-                >
-                  Ajouter un concert
-                </Link>
-              </li>
-              
+
+              {!isAuthenticated ? (
+                <>
+                  <li>
+                    <Link
+                      to="/login"
+                      className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
+                    >
+                      Se connecter
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/register"
+                      className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
+                    >
+                      S'inscrire
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <a
+                      href="#MesConcerts"
+                      className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
+                    >
+                      Mes concerts
+                    </a>
+                  </li>
+                  <li>
+                    <Link
+                      to="/add-lieu"
+                      className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
+                    >
+                      Ajouter un lieu
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/add-concert"
+                      className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
+                    >
+                      Ajouter un concert
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => logout()}
+                      className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400 bg-transparent border-none cursor-pointer p-0"
+                    >
+                      Se déconnecter
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>
@@ -92,7 +114,7 @@ const Header: React.FC = () => {
 
       {/* Overlay */}
       {isMenuOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-opacity-50 backdrop-blur-sm z-40 xl:hidden"
           onClick={closeMenu}
         ></div>
@@ -118,59 +140,75 @@ const Header: React.FC = () => {
           <nav>
             <ul className="space-y-6">
               <li>
-                <Link 
-                  to="/" 
+                <Link
+                  to="/"
                   onClick={closeMenu}
                   className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
                 >
                   Accueil
                 </Link>
               </li>
-              <li>
-                <a 
-                  href="#services" 
-                  onClick={closeMenu}
-                  className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
-                >
-                  Se connecter
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#contact" 
-                  onClick={closeMenu}
-                  className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
-                >
-                  S'inscrire
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#MesConcerts" 
-                  onClick={closeMenu}
-                  className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
-                >
-                  Mes concerts
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#AddLieu" 
-                  onClick={closeMenu}
-                  className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
-                >
-                  Ajouter un lieu
-                </a>
-              </li>
-              <li>
-                <Link 
-                  to="/add-concert"
-                  onClick={closeMenu}
-                  className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
-                >
-                  Ajouter un concert
-                </Link>
-              </li>
+
+              {!isAuthenticated ? (
+                <>
+                  <li>
+                    <Link
+                      to="/login"
+                      onClick={closeMenu}
+                      className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
+                    >
+                      Se connecter
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/register"
+                      onClick={closeMenu}
+                      className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
+                    >
+                      S'inscrire
+                    </Link>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li>
+                    <a
+                      href="#MesConcerts"
+                      onClick={closeMenu}
+                      className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
+                    >
+                      Mes concerts
+                    </a>
+                  </li>
+                  <li>
+                    <Link
+                      to="/add-lieu"
+                      onClick={closeMenu}
+                      className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
+                    >
+                      Ajouter un lieu
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/add-concert"
+                      onClick={closeMenu}
+                      className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
+                    >
+                      Ajouter un concert
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2 w-full bg-transparent border-none cursor-pointer"
+                    >
+                      Se déconnecter
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>

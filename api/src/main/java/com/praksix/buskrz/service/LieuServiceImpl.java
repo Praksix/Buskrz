@@ -3,7 +3,9 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.praksix.buskrz.model.Lieu;
 import com.praksix.buskrz.repository.LieuRepository;
@@ -15,7 +17,13 @@ public class LieuServiceImpl implements LieuService {
     LieuRepository repository;
 
     @Override
-    public void createLieu(Lieu lieu) {
+    public void createLieu(Lieu lieu) throws ResponseStatusException {
+        if (lieu.getName() == null || lieu.getName().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Le nom du lieu est obligatoire");
+        }
+        if (repository.existsByNameIgnoreCase(lieu.getName())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Un lieu avec ce nom existe déjà");
+        }
         repository.save(lieu);
     }
 
@@ -48,4 +56,6 @@ public class LieuServiceImpl implements LieuService {
     public Optional<Lieu> getLieuByCity(String city) {
         return repository.findByCity(city);
     }
+
+    
 }

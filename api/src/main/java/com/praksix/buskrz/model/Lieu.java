@@ -11,16 +11,22 @@ public class Lieu {
     private String name;
     private String city;
     private String adresse;
+    private String website;
 
     // Constructeur par défaut
     public Lieu() {}
 
     // Constructeur avec paramètres
     public Lieu(String id, String name, String city, String adresse) {
+        this(id, name, city, adresse, null);
+    }
+
+    public Lieu(String id, String name, String city, String adresse, String website) {
         this.id = id;
         this.name = name;
         this.city = city;
         this.adresse = adresse;
+        this.website = website;
     }
 
     public String getId() {
@@ -35,6 +41,9 @@ public class Lieu {
     public String getAdresse() {
         return adresse;
     }
+    public String getWebsite() {
+        return website;
+    }
 
     public void setId(String id) {
         this.id = id;
@@ -48,6 +57,9 @@ public class Lieu {
     public void setAdresse(String adresse) {
         this.adresse = adresse;
     }
+    public void setWebsite(String website) {
+        this.website = website;
+    }
 
     @Override
     public String toString() {
@@ -56,6 +68,7 @@ public class Lieu {
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", adresse='" + adresse + '\'' +
+                ", website='" + website + '\'' +
                 '}';
     }
 }
