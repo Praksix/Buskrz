@@ -5,7 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -74,13 +74,24 @@ const Header: React.FC = () => {
               ) : (
                 <>
                   <li>
-                    <a
-                      href="#MesConcerts"
+                    <Link
+                      to="/concerts/liked"
                       className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
                     >
-                      Mes concerts
-                    </a>
+                      Favoris
+                    </Link>
                   </li>
+                  {/* Lien Admin visible uniquement si role === 'ADMIN' */}
+                  {(user?.role === 'ADMIN') && (
+                    <li>
+                      <Link
+                        to="/admin"
+                        className="text-[#CE5526] text-m no-underline font-medium transition-colors duration-300 hover:text-blue-400"
+                      >
+                        Dashboard
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <Link
                       to="/add-lieu"
@@ -178,7 +189,7 @@ const Header: React.FC = () => {
                       onClick={closeMenu}
                       className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
                     >
-                      Mes concerts
+                      Favoris
                     </a>
                   </li>
                   <li>

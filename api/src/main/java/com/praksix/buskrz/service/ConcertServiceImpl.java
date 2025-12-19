@@ -15,15 +15,16 @@ import com.praksix.buskrz.repository.LieuRepository;
 
 @Service
 public class ConcertServiceImpl implements ConcertService {
-    
+
     @Autowired
     ConcertRepository repository;
-    
+
     @Autowired
     LieuRepository lieuRepository;
 
     @Override
     public void createConcert(Concert concert) {
+        concert.setStatus("PENDING");
         repository.save(concert);
     }
 
@@ -60,16 +61,21 @@ public class ConcertServiceImpl implements ConcertService {
     @Override
     public Collection<Concert> getConcertsByCity(String city) {
         List<Concert> concertsInCity = new ArrayList<>();
-        
+
         // Récupérer tous les lieux de la ville
         List<Lieu> lieuxInCity = lieuRepository.findAllByCity(city);
-        
+
         // Pour chaque lieu, récupérer tous les concerts
         for (Lieu lieu : lieuxInCity) {
             List<Concert> concertsInLieu = repository.findAllByLieuId(lieu.getId());
-            concertsInCity.addAll(concertsInLieu);
+            // Filtrer les concerts PENDING
+            for (Concert concert : concertsInLieu) {
+                if (!"PENDING".equals(concert.getStatus())) {
+                    concertsInCity.add(concert);
+                }
+            }
         }
-        
+
         return concertsInCity;
     }
 
@@ -77,5 +83,10 @@ public class ConcertServiceImpl implements ConcertService {
     public Collection<Concert> getConcertsByLieuId(String lieuId) {
         return repository.findAllByLieuId(lieuId);
     }
-    
+
+    @Override
+    public Collection<Concert> getConcertsByStatus(String status) {
+        return repository.getConcertsByStatus(status);
+    }
+
 }

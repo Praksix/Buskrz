@@ -1,4 +1,5 @@
 package com.praksix.buskrz.service;
+
 import java.util.Collection;
 import java.util.Optional;
 
@@ -12,7 +13,7 @@ import com.praksix.buskrz.repository.LieuRepository;
 
 @Service
 public class LieuServiceImpl implements LieuService {
-    
+
     @Autowired
     LieuRepository repository;
 
@@ -24,6 +25,7 @@ public class LieuServiceImpl implements LieuService {
         if (repository.existsByNameIgnoreCase(lieu.getName())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Un lieu avec ce nom existe déjà");
         }
+        lieu.setStatus("PENDING");
         repository.save(lieu);
     }
 
@@ -57,5 +59,8 @@ public class LieuServiceImpl implements LieuService {
         return repository.findByCity(city);
     }
 
-    
+    @Override
+    public Collection<Lieu> getLieuxByStatus(String status) {
+        return repository.findByStatus(status);
+    }
 }

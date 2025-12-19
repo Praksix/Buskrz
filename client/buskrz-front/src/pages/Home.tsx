@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
-import ConnectionTest from '../components/ConnectionTest'
 import LocationDetector from '../components/LocationDetector'
 import CitySearch from '../components/CitySearch'
 import heroBackground from '../assets/hero.png'
@@ -77,11 +76,10 @@ function Home() {
 
 
 
-          <ConnectionTest />
-
+          {/* <ConnectionTest />
           <p className="text-white text-center text-sm font-medium">
             Site en construction, on arrive bientôt !
-          </p>
+          </p>*/}
         </section>
       </main>
 

@@ -80,5 +80,11 @@ public class ConcertController {
         return concertService.getConcertsByLieuId(lieuId);
     }
 
+    @GetMapping("/status/{status}")
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<Concert> getConcertsByStatus(@PathVariable String status) {
+        return concertService.getConcertsByStatus(status);
+    }
+
 
 }
