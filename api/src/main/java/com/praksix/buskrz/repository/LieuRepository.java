@@ -10,19 +10,30 @@ import com.praksix.buskrz.model.Lieu;
 
 @Repository
 public interface LieuRepository extends MongoRepository<Lieu, String> {
-    
+
     /**
      * Trouve un lieu par sa ville
+     * 
      * @param city la ville à rechercher
      * @return un Optional contenant le lieu trouvé ou vide
      */
     Optional<Lieu> findByCity(String city);
+
     boolean existsByNameIgnoreCase(String name);
-    
+
     /**
      * Trouve tous les lieux d'une ville
+     * 
      * @param city la ville à rechercher
      * @return une liste de tous les lieux de la ville
      */
     List<Lieu> findAllByCity(String city);
+
+    /**
+     * Trouve tous les lieux par leur statut
+     * 
+     * @param status le statut à rechercher (PENDING, APPROVED, etc.)
+     * @return une liste de tous les lieux avec ce statut
+     */
+    List<Lieu> findByStatus(String status);
 }

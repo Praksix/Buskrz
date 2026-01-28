@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.praksix.buskrz.model.Lieu;
 import com.praksix.buskrz.service.LieuService;
 
-
-
 @RestController
 @RequestMapping("/api/v1/lieux")
 public class LieuController {
-    
+
     @Autowired
     LieuService lieuService;
 
@@ -66,6 +64,11 @@ public class LieuController {
     public void deleteAllLieux() {
         lieuService.deleteAllLieux();
     }
-   
-    
+
+    @GetMapping("/status/{status}")
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<Lieu> getLieuxByStatus(@PathVariable String status) {
+        return lieuService.getLieuxByStatus(status);
+    }
+
 }

@@ -37,10 +37,10 @@ public class ArtisteController {
         return artisteService.getArtisteById(id);
     }
 
-
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateArtiste(@PathVariable String id, @RequestBody Artiste artiste) {
+        // pas d'utilisation de l'id dans le body?
         artisteService.updateArtiste(artiste);
     }
 
@@ -52,7 +52,7 @@ public class ArtisteController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAllArtiste() {
+    public void deleteAllArtiste() { //mettre deleteAllArtiste au pluriel pour être cohérent avec en dessous
         artisteService.deleteAllArtistes();
     }
    
