@@ -393,10 +393,14 @@ function ConcertsByCity() {
                 onClick={() => navigate(`/concert/${concert.id}`, { state: { fromCity: ville } })}
               >
                 {/* Layout avec image à gauche et contenu à droite */}
-                <div className="flex gap-4 h-full relative">
+                <div className="flex gap-4 relative">
                   {/* Image à gauche - utilise getImageUrl pour gérer GridFS ou URL externe */}
-                  <div className="flex-shrink-0 h-full relative">
-                    <img src={getImageUrl(concert.image)} alt={concert.name} className="w-30 h-full object-cover rounded-lg sm:w-70" />
+                  <div className="flex-shrink-0 relative w-30 sm:w-70">
+                    <img
+                      src={getImageUrl(concert.image)}
+                      alt={concert.name}
+                      className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                    />
                     {/* Like Button on Image */}
                     <div className="absolute top-2 right-2 z-10">
                       <LikeButton

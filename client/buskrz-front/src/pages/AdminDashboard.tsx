@@ -211,9 +211,6 @@ const AdminDashboard: React.FC = () => {
                         {/* Section Stats (Exemple) */}
                         <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
                             <h2 className="text-2xl font-semibold mb-4 text-[#CE5526]">Statistiques</h2>
-                            <p className="text-gray-600">
-                                Vue d'ensemble de l'activité sur Buskrz.
-                            </p>
                             <p>Nombre de concerts à venir : {Concerts.length}</p>
                             <p>Nombre de lieux recensés: {lieux.length}</p>
                             <p>Nombre d'utilisateurs: {users.length}</p>

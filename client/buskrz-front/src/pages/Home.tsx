@@ -4,6 +4,7 @@ import Header from '../components/Header'
 import LocationDetector from '../components/LocationDetector'
 import CitySearch from '../components/CitySearch'
 import heroBackground from '../assets/hero.png'
+import baguettes from '../assets/baguettes.svg'
 
 function Home() {
   // 🎯 ÉTAPE 1 : Créer un état pour stocker la ville détectée
@@ -68,19 +69,43 @@ function Home() {
           </div>
         </section>
 
-        <section className="flex flex-col items-center w-full max-w-md gap-4 px-6 py-12">
-          {/* 🆕 Passer le callback au LocationDetector */}
+        <section className="w-full px-6 py-12 md:px-16 lg:px-24 xl:px-32 flex flex-col md:flex-row items-center gap-12">
+          <div className="w-50 md:w-1/4 flex justify-center">
+            <img
+              src={baguettes}
+              alt="Baguettes de batterie"
+              className="w-full max-w-sm md:max-w-md"
+            />
+          </div>
+
+          <div className="w-full md:w-3/4">
+            <h3 className="text-white text-5xl md:text-6xl font-medium leading-tight text-left">Soutiens ta scène locale.</h3>
+
+            <p className="text-white text-lg font-light mt-6 text-left">
+              <p>Parce que les meilleurs concerts se jouent souvent là où on ne les attend pas
+              Buskrz est né d'un constat : les lieux qui font vraiment vivre une scène locale – ce bar qui programme un concert pour la première fois, ce squat qui ouvre ses portes le temps d'un weekend, cette salle associative de quartier – n'ont jamais de visibilité.
+              Pendant que les grandes salles remplissent les agendas culturels, des dizaines de concerts se jouent dans l'ombre. Des premières parties qui cherchent leur public. Des lieux éphémères qui tentent l'aventure. Des scènes émergentes qui n'ont ni budget com' ni réseau.
+              C'est là qu'on intervient.</p>
+              Buskrz, c'est une plateforme 100% communautaire où chacun peut recenser les concerts de son territoire. Pas de hiérarchie, pas de sélection : du showcase dans un café au set improvisé dans un lieu alternatif, tout mérite d'exister.
+              <p>
+              Tu connais un lieu qui programme ? Crée-le sur Buskrz.
+              Tu tombes sur une affiche de concert ? Ajoute-le.
+              Tu joues quelque part ? Partage-le.</p>
+              Que tu sois artiste, organisateur, passionné de musique ou simple curieux, tu participes à faire émerger ce qui mérite de l'être. Parce qu'un premier concert dans un bar de quartier, c'est peut-être le début d'une belle histoire. Et que ces histoires-là se construisent collectivement.
+              Rejoins la communauté Buskrz
+              Gratuit, sans pub, pensé pour les scènes émergentes.
+              Parce que la culture, ça se partage.
+            </p>
+          </div>
+        </section>
 
 
 
 
-
-
-          {/* <ConnectionTest />
+        {/* <ConnectionTest />
           <p className="text-white text-center text-sm font-medium">
             Site en construction, on arrive bientôt !
           </p>*/}
-        </section>
       </main>
 
       {isCityModalOpen && (

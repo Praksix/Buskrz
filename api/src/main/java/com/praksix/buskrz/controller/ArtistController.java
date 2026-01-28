@@ -27,6 +27,8 @@ public class ArtistController {
         return "Test endpoint works!";
     }
 
+    //TODO: Que faire de ce fichier? peut être déplacé dans un ArtisteController ou à renommer
+
     /**
      * Trouve un artiste par nom ou le crée s'il n'existe pas
      * Body : { "name": "NomArtiste", "genre": "Rock" }

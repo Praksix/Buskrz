@@ -184,13 +184,13 @@ const Header: React.FC = () => {
               ) : (
                 <>
                   <li>
-                    <a
-                      href="#MesConcerts"
+                    <Link
+                      to="/concerts/liked"
                       onClick={closeMenu}
                       className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
                     >
                       Favoris
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <Link
@@ -208,6 +208,16 @@ const Header: React.FC = () => {
                       className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
                     >
                       Ajouter un concert
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      to="/admin"
+                      onClick={closeMenu}
+                      className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
+                    >
+                      Dashboard
                     </Link>
                   </li>
                   <li>

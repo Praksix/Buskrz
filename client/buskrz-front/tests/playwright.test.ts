@@ -1,55 +1,97 @@
 import { test, expect } from '@playwright/test'
 
-test('Ajout de concert et vérification sur la page des concerts par ville', async ({ page }) => {
-  // 🎯 ÉTAPE 1 : Aller sur la page d'accueil
-  await page.goto('http://localhost:5173')
-  await expect(page.getByText('Voir les concerts')).toBeVisible()
-  
-  // 🎯 ÉTAPE 2 : Aller à la page d'ajout de concert
-  await page.getByRole('button', { name: 'Voir les concerts à Grenoble →' }).click();
-  await page.getByRole('link', { name: 'Ajouter un concert' }).click();
-  
-  // 🎯 ÉTAPE 3 : Remplir le formulaire avec des données de test
-  const concertData = {
-    name: 'Soirée Jazz Test',
-    artiste: 'ColtraneTest',
-    genre: 'Jazz',
-    date: '2025-10-23',
-    time: '20:00',
-    prix: '5'
+test('Flux complet : Localisation, Login Admin, Ajout, Validation et Vérification', async ({ page }) => {
+  // 🛡️ Mock de la géolocalisation pour forcer Grenoble
+  const mockLocation = {
+    city: 'Grenoble',
+    country_name: 'France',
+    latitude: 45.1885,
+    longitude: 5.7245
   };
-  
-  await page.getByRole('textbox', { name: 'Nom du concert *' }).fill(concertData.name);
-  await page.getByRole('textbox', { name: 'Noms des artistes (séparés' }).fill(concertData.artiste);
-  await page.getByLabel('Genre musical 🎸').selectOption(concertData.genre);
-  await page.getByLabel('Lieu du concert *').selectOption('68cab7855474f8a2dd3a4b1b');
-  await page.getByRole('textbox', { name: 'Date *' }).fill(concertData.date);
-  await page.getByRole('textbox', { name: 'Heure' }).fill(concertData.time);
-  await page.getByRole('textbox', { name: 'Prix' }).fill(concertData.prix);
-  
-  // 🎯 ÉTAPE 4 : Soumettre le formulaire
+
+  await page.route('https://ipapi.co/json/', async route => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(mockLocation)
+    });
+  });
+
+  await page.route('http://ip-api.com/json/', async route => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        ...mockLocation,
+        status: 'success',
+        query: '8.8.8.8'
+      })
+    });
+  });
+
+  // 🎯 ÉTAPE 1 : Accueil et détection de ville
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: /Vous êtes à.*Grenoble/i })).toBeVisible({ timeout: 15000 });
+
+  const cityButton = page.getByRole('button', { name: /Voir les concerts à.*Grenoble/i });
+  await expect(cityButton).toBeVisible();
+
+  // 🎯 ÉTAPE 2 : Connexion Admin
+  await page.goto('/login');
+  await page.fill('#email', 'toupoutou@toupoutou.com');
+  await page.fill('#password', 'toupoutou');
+  await page.click('button[type="submit"]');
+
+  // Attendre d'être sur la page d'accueil avec le lien Dashboard visible (prouve le rôle ADMIN)
+  await expect(page).toHaveURL('/', { timeout: 10000 });
+  const dashboardLink = page.getByRole('link', { name: 'Dashboard' });
+  await expect(dashboardLink).toBeVisible({ timeout: 10000 });
+
+  // 🎯 ÉTAPE 3 : Ajout d'un concert (PENDING)
+  await page.goto('/add-concert');
+
+  const concertName = `Test Concert ${Date.now()}`;
+  const artisteName = 'Artiste Playwright';
+
+  await page.getByRole('textbox', { name: 'Nom du concert *' }).fill(concertName);
+  await page.getByRole('textbox', { name: 'Noms des artistes (séparés' }).fill(artisteName);
+  await page.getByLabel(/Genre musical/i).selectOption('Rock');
+  await page.getByLabel(/Lieu du concert/i).selectOption({ index: 1 });
+
+  await page.getByRole('textbox', { name: 'Date *' }).fill('2025-12-25');
+  await page.getByRole('textbox', { name: 'Heure' }).fill('21:00');
+  await page.getByRole('textbox', { name: 'Prix' }).fill('15');
+
   await page.getByRole('button', { name: 'Ajouter le concert' }).click();
-  
-  // 🎯 ÉTAPE 5 : Attendre le message de succès
   await expect(page.getByText('Concert ajouté avec succès !')).toBeVisible();
-  
-  // 🎯 ÉTAPE 6 : Aller sur la page des concerts par ville (Grenoble)
-  await page.goto('http://localhost:5173/concerts/Grenoble');
-  
-  // 🎯 ÉTAPE 7 : Vérifier que le titre de la page contient "Grenoble"
-  await expect(page.getByText('Concerts à Grenoble')).toBeVisible();
-  
-  // 🎯 ÉTAPE 8 : Vérifier que les informations du concert ajouté sont présentes
-  // Vérifier le nom du concert (premier heading trouvé)
-  await expect(page.getByRole('heading', { name: concertData.name }).first()).toBeVisible();
-  
-  // Vérifier que l'artiste est présent quelque part sur la page
-  await expect(page.getByText(concertData.artiste)).toBeVisible();
-  
-  // Vérifier que le genre est présent dans la section des genres (pas dans le titre)
-  await expect(page.locator('span.text-white.italic.text-2xl.font-thin').filter({ hasText: concertData.genre }).first()).toBeVisible();
-  
-  // Vérifier que notre concert spécifique est présent (nom + artiste)
-  await expect(page.getByText(concertData.name)).toBeVisible();
-  await expect(page.getByText(concertData.artiste)).toBeVisible();
-})
+
+  // 🎯 ÉTAPE 4 : Dashboard Admin et Validation
+  await dashboardLink.click(); // Utiliser le lien du header
+  await expect(page.getByText('Tableau de Bord Administrateur')).toBeVisible();
+
+  // Trouver le concert dans la liste des "en attente"
+  const pendingConcertItem = page.locator('div').filter({ hasText: concertName }).last();
+  await expect(pendingConcertItem).toBeVisible();
+  await pendingConcertItem.click();
+
+  // Sur la page de détails, cliquer sur Valider
+  await expect(page.getByRole('heading', { name: concertName })).toBeVisible();
+  await page.getByRole('button', { name: 'Valider' }).click();
+
+  // Retour automatique vers le dashboard
+  await expect(page).toHaveURL('/admin');
+
+  // 🎯 ÉTAPE 5 : Vérification finale à Grenoble
+  await page.goto('/concerts/Grenoble');
+
+  // 1. Cibler le titre (heading) qui est unique grâce au timestamp
+  const heading = page.getByRole('heading', { name: concertName });
+  await expect(heading).toBeVisible();
+
+  // 2. Cibler la carte spécifique en utilisant le titre comme "ancre" (has: heading)
+  // On limite la recherche aux éléments ayant la classe 'rounded-xl' pour éviter de remonter jusqu'au root
+  const concertCard = page.locator('.rounded-xl').filter({ has: heading });
+
+  // 3. Vérifier l'artiste à l'intérieur de cette carte
+  await expect(concertCard.getByText(artisteName)).toBeVisible();
+});

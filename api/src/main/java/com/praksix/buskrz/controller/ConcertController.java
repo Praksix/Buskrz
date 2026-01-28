@@ -47,6 +47,7 @@ public class ConcertController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateConcert(@PathVariable String id, @RequestBody Concert concert) {
+        //pas d'utilisation de l'id dans le body?
         concertService.updateConcert(concert);
     }
    
@@ -58,7 +59,7 @@ public class ConcertController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAllConcert() {
+    public void deleteAllConcert() { //mettre deleteAllConcert au pluriel pour être cohérent avec en dessous
         concertService.deleteAllConcerts();
     }
 

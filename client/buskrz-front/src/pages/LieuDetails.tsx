@@ -61,22 +61,22 @@ function LieuDetails() {
  * @param imageField - Le champ image du concert (ID GridFS, URL, ou vide)
  * @returns L'URL complète de l'image
  */
-const getImageUrl = (imageField: string | undefined): string => {
-  // Si pas d'image, utiliser l'image par défaut
-  if (!imageField || imageField.trim() === '') {
-    return illusImage
-  }
+  const getImageUrl = (imageField: string | undefined): string => {
+    // Si pas d'image, utiliser l'image par défaut
+    if (!imageField || imageField.trim() === '') {
+      return illusImage
+    }
 
-  // Si c'est déjà une URL complète (commence par http:// ou https://)
-  // C'est une image externe, on la retourne telle quelle
-  if (imageField.startsWith('http://') || imageField.startsWith('https://')) {
-    return imageField
-  }
+    // Si c'est déjà une URL complète (commence par http:// ou https://)
+    // C'est une image externe, on la retourne telle quelle
+    if (imageField.startsWith('http://') || imageField.startsWith('https://')) {
+      return imageField
+    }
 
-  // Sinon, c'est un ID GridFS
-  // On construit l'URL vers notre backend
-  return `http://localhost:8080/api/v1/files/${imageField}`
-}
+    // Sinon, c'est un ID GridFS
+    // On construit l'URL vers notre backend
+    return `http://localhost:8080/api/v1/files/${imageField}`
+  }
 
   const handleValidateLieu = async () => {
     if (!lieu) return
@@ -281,7 +281,7 @@ const getImageUrl = (imageField: string | undefined): string => {
         {/* Mobile Image (Banner style) */}
         <div className="md:hidden absolute top-0 left-0 w-full h-[47vh] z-0">
           <img
-            src={lieu.image || illusImage}
+            src={getImageUrl(lieu.image) || illusImage}
             alt={lieu.name}
             className="w-full h-full object-cover"
           />
