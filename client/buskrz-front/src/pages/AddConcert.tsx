@@ -440,7 +440,7 @@ function AddConcert() {
                     <button
                       type="button"
                       onClick={() => removeArtist(index)}
-                      className="text-red-400 hover:text-red-300 p-2"
+                      className="text-white/80 hover:text-white p-2"
                       title="Supprimer cet artiste"
                     >
                       ✕
