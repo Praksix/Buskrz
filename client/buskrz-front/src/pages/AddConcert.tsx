@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
+import { API_URL } from '../config';
+
 
 interface Artiste {
   id: string;
@@ -77,8 +79,8 @@ function AddConcert() {
     const fetchData = async () => {
       try {
         const [artistesRes, lieuxRes] = await Promise.all([
-          fetch('http://localhost:8080/api/v1/artistes'),
-          fetch('http://localhost:8080/api/v1/lieux')
+          fetch(`${API_URL}/api/v1/artistes`),
+          fetch(`${API_URL}/api/v1/lieux`)
         ]);
 
         if (artistesRes.ok && lieuxRes.ok) {
@@ -191,7 +193,7 @@ function AddConcert() {
 
     // Envoyer la requête POST
     // Note : Pas de 'Content-Type' header, le navigateur l'ajoute automatiquement
-    const response = await fetch('http://localhost:8080/api/v1/files/upload', {
+    const response = await fetch(`${API_URL}/api/v1/files/upload`, {
       method: 'POST',
       body: formData  // FormData, pas JSON !
     });
@@ -225,7 +227,7 @@ function AddConcert() {
           console.log(`🎸 Tentative de création/recherche de l'artiste: ${artistItem.name}, genre: ${artistItem.genre}`);
 
           // Appeler l'endpoint find-or-create
-          const response = await fetch('http://localhost:8080/api/v1/artist-find-or-create', {
+          const response = await fetch(`${API_URL}/api/v1/artist-find-or-create`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -301,7 +303,7 @@ function AddConcert() {
         lien: formData.lien
       };
 
-      const response = await fetch('http://localhost:8080/api/v1/concerts', {
+      const response = await fetch(`${API_URL}/api/v1/concerts`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -338,7 +340,7 @@ function AddConcert() {
         setImagePreview(null);
 
         // Recharger la liste des artistes pour inclure les nouveaux
-        const artistesRes = await fetch('http://localhost:8080/api/v1/artistes');
+        const artistesRes = await fetch(`${API_URL}/api/v1/artistes`);
         if (artistesRes.ok) {
           const artistesData = await artistesRes.json();
           setArtistes(artistesData);

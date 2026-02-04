@@ -4,6 +4,8 @@ import Header from '../components/Header'
 import illusImage from '../assets/illus.jpg'
 import LikeButton from '../components/LikeButton'
 import { useAuth } from '../contexts/AuthContext'
+import { API_URL } from '../config'
+
 
 interface Concert {
   id: string
@@ -34,7 +36,7 @@ interface Lieu {
 
 const fetchArtisteById = async (artisteId: string): Promise<Artiste | null> => {
   try {
-    const response = await fetch(`http://localhost:8080/api/v1/artistes/${artisteId}`)
+    const response = await fetch(`${API_URL}/api/v1/artistes/${artisteId}`)
     if (!response.ok) return null
     return await response.json()
   } catch (err) {
@@ -45,7 +47,7 @@ const fetchArtisteById = async (artisteId: string): Promise<Artiste | null> => {
 
 const fetchLieuById = async (lieuId: string): Promise<Lieu | null> => {
   try {
-    const response = await fetch(`http://localhost:8080/api/v1/lieux/${lieuId}`)
+    const response = await fetch(`${API_URL}/api/v1/lieux/${lieuId}`)
     if (!response.ok) return null
     return await response.json()
   } catch (err) {
@@ -79,7 +81,7 @@ const getImageUrl = (imageField: string | undefined): string => {
 
   // Sinon, c'est un ID GridFS
   // On construit l'URL vers notre backend
-  return `http://localhost:8080/api/v1/files/${imageField}`
+  return `${API_URL}/api/v1/files/${imageField}`
 }
 
 function ConcertDetails() {
@@ -108,7 +110,7 @@ function ConcertDetails() {
         setError('')
 
         // 1. Fetch Concert
-        const concertResponse = await fetch(`http://localhost:8080/api/v1/concerts/${id}`)
+        const concertResponse = await fetch(`${API_URL}/api/v1/concerts/${id}`)
         if (!concertResponse.ok) {
           throw new Error(`Concert introuvable (Status: ${concertResponse.status})`)
         }
@@ -144,7 +146,7 @@ function ConcertDetails() {
     if (isAuthenticated && user?.id) {
       const fetchLikedConcerts = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/api/v1/users/${user.id}/concerts/liked`, {
+          const response = await fetch(`${API_URL}/api/v1/users/${user.id}/concerts/liked`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -173,7 +175,7 @@ function ConcertDetails() {
   const handleValidateConcert = async () => {
     if (!concert) return
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/concerts/${concert.id}`, {
+      const response = await fetch(`${API_URL}/api/v1/concerts/${concert.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -196,7 +198,7 @@ function ConcertDetails() {
   const handleDeleteConcert = async () => {
     if (!concert || !window.confirm('Êtes-vous sûr de vouloir supprimer ce concert ?')) return
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/concerts/${concert.id}`, {
+      const response = await fetch(`${API_URL}/api/v1/concerts/${concert.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

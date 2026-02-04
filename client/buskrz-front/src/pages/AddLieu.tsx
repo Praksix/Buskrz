@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import Header from '../components/Header';
+import { API_URL } from '../config';
+
 
 interface LieuFormData {
   name: string;
@@ -98,7 +100,7 @@ function AddLieu() {
 
     // Envoyer la requête POST
     // Note : Pas de 'Content-Type' header, le navigateur l'ajoute automatiquement
-    const response = await fetch('http://localhost:8080/api/v1/files/upload', {
+    const response = await fetch(`${API_URL}/api/v1/files/upload`, {
       method: 'POST',
       body: formData  // FormData, pas JSON !
     });
@@ -129,7 +131,7 @@ function AddLieu() {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/lieux', {
+      const response = await fetch(`${API_URL}/api/v1/lieux`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

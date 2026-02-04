@@ -4,6 +4,8 @@ import Header from '../components/Header'
 import illusImage from '../assets/illus.jpg'
 import LikeButton from '../components/LikeButton'
 import { useAuth } from '../contexts/AuthContext'
+import { API_URL } from '../config'
+
 
 // Interface qui correspond au modèle Concert.java du backend
 interface Concert {
@@ -38,7 +40,7 @@ interface Lieu {
 // Fonction pour récupérer les détails d'un artiste par son ID
 const fetchArtisteById = async (artisteId: string): Promise<Artiste | null> => {
   try {
-    const response = await fetch(`http://localhost:8080/api/v1/artistes/${artisteId}`, {
+    const response = await fetch(`${API_URL}/api/v1/artistes/${artisteId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -61,7 +63,7 @@ const fetchArtisteById = async (artisteId: string): Promise<Artiste | null> => {
 // Fonction pour récupérer les détails d'un lieu par son ID
 const fetchLieuById = async (lieuId: string): Promise<Lieu | null> => {
   try {
-    const response = await fetch(`http://localhost:8080/api/v1/lieux/${lieuId}`, {
+    const response = await fetch(`${API_URL}/api/v1/lieux/${lieuId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -156,7 +158,7 @@ const getImageUrl = (imageField: string | undefined): string => {
 
   // Sinon, c'est un ID GridFS
   // On construit l'URL vers notre backend
-  return `http://localhost:8080/api/v1/files/${imageField}`
+  return `${API_URL}/api/v1/files/${imageField}`
 }
 
 function ConcertsLiked() {
@@ -215,7 +217,7 @@ function ConcertsLiked() {
         setError('')
 
         // 🎯 ÉTAPE 4 : Faire la requête API pour les concerts likés
-        const response = await fetch(`http://localhost:8080/api/v1/users/${user.id}/concerts/liked`, {
+        const response = await fetch(`${API_URL}/api/v1/users/${user.id}/concerts/liked`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
