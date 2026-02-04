@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import illusImage from '../assets/illus.jpg'
 import { useAuth } from '../contexts/AuthContext'
+import { API_URL } from '../config'
+
 
 interface Lieu {
   id: string
@@ -32,7 +34,7 @@ function LieuDetails() {
         setIsLoading(true)
         setError('')
 
-        const lieuResponse = await fetch(`http://localhost:8080/api/v1/lieux/${id}`)
+        const lieuResponse = await fetch(`${API_URL}/api/v1/lieux/${id}`)
         if (!lieuResponse.ok) {
           throw new Error(`Lieu introuvable (Status: ${lieuResponse.status})`)
         }
@@ -75,13 +77,13 @@ function LieuDetails() {
 
     // Sinon, c'est un ID GridFS
     // On construit l'URL vers notre backend
-    return `http://localhost:8080/api/v1/files/${imageField}`
+    return `${API_URL}/api/v1/files/${imageField}`
   }
 
   const handleValidateLieu = async () => {
     if (!lieu) return
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/lieux/${lieu.id}/validate`, {
+      const response = await fetch(`${API_URL}/api/v1/lieux/${lieu.id}/validate`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -102,7 +104,7 @@ function LieuDetails() {
   const handleDeleteLieu = async () => {
     if (!lieu || !window.confirm('Êtes-vous sûr de vouloir supprimer ce lieu ?')) return
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/lieux/${lieu.id}`, {
+      const response = await fetch(`${API_URL}/api/v1/lieux/${lieu.id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

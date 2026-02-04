@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Header from '../components/Header';
+import { API_URL } from '../config';
+
 
 interface Concert {
     id: string;
@@ -35,7 +37,7 @@ const AdminDashboard: React.FC = () => {
     React.useEffect(() => {
         const fetchPendingConcerts = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/v1/concerts/status/PENDING');
+                const response = await fetch(`${API_URL}/api/v1/concerts/status/PENDING`);
                 if (response.ok) {
                     const data = await response.json();
                     setPendingConcerts(data);
@@ -50,7 +52,7 @@ const AdminDashboard: React.FC = () => {
 
         const fetchConcerts = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/v1/concerts');
+                const response = await fetch(`${API_URL}/api/v1/concerts`);
                 if (response.ok) {
                     const data = await response.json();
                     setConcerts(data);
@@ -64,7 +66,7 @@ const AdminDashboard: React.FC = () => {
 
         const fetchPendingLieux = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/v1/lieux/status/PENDING');
+                const response = await fetch(`${API_URL}/api/v1/lieux/status/PENDING`);
                 if (response.ok) {
                     const data = await response.json();
                     setPendingLieux(data);
@@ -78,7 +80,7 @@ const AdminDashboard: React.FC = () => {
 
         const fetchLieux = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/v1/lieux');
+                const response = await fetch(`${API_URL}/api/v1/lieux`);
                 if (response.ok) {
                     const data = await response.json();
                     setLieux(data);
@@ -93,7 +95,7 @@ const AdminDashboard: React.FC = () => {
         const fetchUsers = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:8080/api/v1/users', {
+                const response = await fetch(`${API_URL}/api/v1/users`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }

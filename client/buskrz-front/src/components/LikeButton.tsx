@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import { API_URL } from '../config'
+
 
 interface LikeButtonProps {
     concertId: string
@@ -38,7 +40,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ concertId, initialIsLiked = fal
 
         try {
             const method = newState ? 'POST' : 'DELETE'
-            const url = `http://localhost:8080/api/v1/users/${userId}/concerts/${concertId}/like`
+            const url = `${API_URL}/api/v1/users/${userId}/concerts/${concertId}/like`
             console.log(`Sending ${method} request to ${url}`)
 
             const response = await fetch(url, {

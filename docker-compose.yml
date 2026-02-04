@@ -30,6 +30,7 @@ services:
       - MONGODB_URI=${MONGODB_URI}
       - MONGODB_DATABASE=buskrz
       - PORT=8080
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
     depends_on:
       - mongodb
     networks:

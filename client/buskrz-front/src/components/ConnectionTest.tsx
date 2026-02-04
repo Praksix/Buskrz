@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { API_URL } from '../config'
+
 
 interface ConnectionStatus {
   isLoading: boolean
@@ -21,7 +23,7 @@ function ConnectionTest() {
     })
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/health/test', {
+      const response = await fetch(`${API_URL}/api/v1/health/test`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -44,9 +46,9 @@ function ConnectionTest() {
       }
     } catch (error) {
       let errorMessage = 'Connexion échouée'
-      
+
       if (error instanceof TypeError && error.message.includes('fetch')) {
-        errorMessage = 'Serveur non accessible - Vérifiez que le backend est démarré sur le port 8080'
+        errorMessage = `Serveur non accessible - Vérifiez que le backend est démarré sur ${API_URL}`
       } else if (error instanceof Error) {
         errorMessage = `Erreur: ${error.message}`
       }
@@ -61,22 +63,20 @@ function ConnectionTest() {
 
   return (
     <div className="height-300 width-300 border-1 bg-white/5 shadow-xl border-white-40 rounded-xl p-10">
-      <button 
-        onClick={testConnection} 
+      <button
+        onClick={testConnection}
         disabled={status.isLoading}
-        className={`bg-white border-1 border-white-40 rounded-lg p-2 text-[#CE5526] shadow-xl p-4 ${
-          status.isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
-        }`}
+        className={`bg-white border-1 border-white-40 rounded-lg p-2 text-[#CE5526] shadow-xl p-4 ${status.isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+          }`}
       >
         {status.isLoading ? 'Test en cours...' : 'Tester la connexion'}
       </button>
-      
+
       {status.message && (
-        <div className={`mt-4 p-3 rounded-lg text-sm ${
-          status.isSuccess 
-            ? 'bg-green-100 text-green-800 border border-green-200' 
+        <div className={`mt-4 p-3 rounded-lg text-sm ${status.isSuccess
+            ? 'bg-green-100 text-green-800 border border-green-200'
             : 'bg-red-100 text-red-800 border border-red-200'
-        }`}>
+          }`}>
           {status.message}
         </div>
       )}

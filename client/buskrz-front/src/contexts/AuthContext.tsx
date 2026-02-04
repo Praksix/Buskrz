@@ -3,6 +3,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode, FC } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import type { User, UserRole, AuthResponse } from '../types/auth.types';
+import { API_URL } from '../config';
+
 
 // Interface pour le contexte d'authentification
 interface AuthContextType {
@@ -53,7 +55,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           }
 
           // Tenter de récupérer les infos utilisateur complètes
-          const response = await fetch('http://localhost:8080/api/v1/users/me', {
+          const response = await fetch(`${API_URL}/api/v1/users/me`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -92,7 +94,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   // Fonction de connexion
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/auth/authenticate', {
+      const response = await fetch(`${API_URL}/api/v1/auth/authenticate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -117,7 +119,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   // Fonction d'inscription
   const register = async (nom: string, email: string, password: string): Promise<void> => {
     try {
-      const response = await fetch('http://localhost:8080/api/v1/auth/register', {
+      const response = await fetch(`${API_URL}/api/v1/auth/register`, {
         method: 'POST',
         credentials: 'include',
         headers: {

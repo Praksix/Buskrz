@@ -211,14 +211,19 @@ const Header: React.FC = () => {
                     </Link>
                   </li>
 
-                  <li>
-                    <Link
-                      to="/admin"
-                      onClick={closeMenu}
-                      className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
-                    >
-                      Dashboard
-                    </Link>
+                  <li>{
+                  /* Lien Admin visible uniquement si role === 'ADMIN' */}
+                    {(user?.role === 'ADMIN') && (
+                      <li>
+                        <Link
+                          to="/admin"
+                          onClick={closeMenu}
+                          className="block text-left text-black text-xl font-medium no-underline transition-colors duration-300 hover:text-[#CE5526] py-2"
+                        >
+                          Dashboard
+                        </Link>
+                      </li>
+                    )}
                   </li>
                   <li>
                     <button
