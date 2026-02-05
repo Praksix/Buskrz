@@ -61,6 +61,7 @@ public class ConcertServiceImpl implements ConcertService {
     @Override
     public Collection<Concert> getConcertsByCity(String city) {
         List<Concert> concertsInCity = new ArrayList<>();
+        java.time.LocalDate today = java.time.LocalDate.now();
 
         // Récupérer tous les lieux de la ville
         List<Lieu> lieuxInCity = lieuRepository.findAllByCity(city);
@@ -68,9 +69,10 @@ public class ConcertServiceImpl implements ConcertService {
         // Pour chaque lieu, récupérer tous les concerts
         for (Lieu lieu : lieuxInCity) {
             List<Concert> concertsInLieu = repository.findAllByLieuId(lieu.getId());
-            // Filtrer les concerts PENDING
+            // Filtrer les concerts PENDING et les concerts passés
             for (Concert concert : concertsInLieu) {
-                if (!"PENDING".equals(concert.getStatus())) {
+                if (!"PENDING".equals(concert.getStatus()) &&
+                        (concert.getDate() != null && !concert.getDate().isBefore(today))) {
                     concertsInCity.add(concert);
                 }
             }
@@ -87,6 +89,20 @@ public class ConcertServiceImpl implements ConcertService {
     @Override
     public Collection<Concert> getConcertsByStatus(String status) {
         return repository.getConcertsByStatus(status);
+    }
+
+    @Override
+    public void validateConcert(String id) {
+        Optional<Concert> concert = repository.findById(id);
+        if (concert.isPresent()) {
+            Concert c = concert.get();
+            c.setStatus("APPROVED");
+            repository.save(c);
+        } else {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.NOT_FOUND,
+                    "Concert introuvable");
+        }
     }
 
 }

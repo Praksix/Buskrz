@@ -71,4 +71,10 @@ public class LieuController {
         return lieuService.getLieuxByStatus(status);
     }
 
+    @PutMapping("/validate/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void validateLieu(@PathVariable String id) {
+        lieuService.validateLieu(id);
+    }
+
 }

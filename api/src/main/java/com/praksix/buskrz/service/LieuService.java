@@ -25,4 +25,6 @@ public interface LieuService {
     public Optional<Lieu> getLieuByCity(String city);
 
     public Collection<Lieu> getLieuxByStatus(String status);
+
+    public void validateLieu(String id);
 }

@@ -18,12 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.praksix.buskrz.model.Concert;
 import com.praksix.buskrz.service.ConcertService;
 
-
-
 @RestController
 @RequestMapping("/api/v1/concerts")
 public class ConcertController {
-    
+
     @Autowired
     ConcertService concertService;
 
@@ -47,10 +45,10 @@ public class ConcertController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void updateConcert(@PathVariable String id, @RequestBody Concert concert) {
-        //pas d'utilisation de l'id dans le body?
+        // pas d'utilisation de l'id dans le body?
         concertService.updateConcert(concert);
     }
-   
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteConcert(@PathVariable String id) {
@@ -59,7 +57,7 @@ public class ConcertController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAllConcert() { //mettre deleteAllConcert au pluriel pour être cohérent avec en dessous
+    public void deleteAllConcert() { // mettre deleteAllConcert au pluriel pour être cohérent avec en dessous
         concertService.deleteAllConcerts();
     }
 
@@ -87,5 +85,10 @@ public class ConcertController {
         return concertService.getConcertsByStatus(status);
     }
 
+    @PutMapping("/{id}/validate")
+    @ResponseStatus(HttpStatus.OK)
+    public void validateConcert(@PathVariable String id) {
+        concertService.validateConcert(id);
+    }
 
 }

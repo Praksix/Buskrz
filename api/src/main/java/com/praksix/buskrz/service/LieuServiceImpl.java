@@ -63,4 +63,16 @@ public class LieuServiceImpl implements LieuService {
     public Collection<Lieu> getLieuxByStatus(String status) {
         return repository.findByStatus(status);
     }
+
+    @Override
+    public void validateLieu(String id) {
+        Optional<Lieu> lieu = repository.findById(id);
+        if (lieu.isPresent()) {
+            Lieu l = lieu.get();
+            l.setStatus("APPROVED");
+            repository.save(l);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lieu introuvable");
+        }
+    }
 }

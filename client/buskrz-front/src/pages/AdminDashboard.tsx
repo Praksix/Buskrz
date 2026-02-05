@@ -20,6 +20,7 @@ interface Lieu {
 
 interface UserData {
     id: string;
+    name: string;
     email: string;
     role: string;
 }
@@ -208,6 +209,24 @@ const AdminDashboard: React.FC = () => {
                                     </p>
                                 </div>
                             )}
+                        </div>
+
+                        <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
+                            <h2 className="text-2xl font-semibold mb-4 text-[#CE5526]">Liste des Utilisateurs</h2>
+                            <p className="text-gray-600 mb-4">Aperçu de la communauté.</p>
+
+                            <div className="max-h-[300px] overflow-y-auto pr-2 space-y-2 custom-scrollbar">
+                                {users.length > 0 ? (
+                                    users.map((u) => (
+                                        <div key={u.id} className="p-3 bg-gray-50 rounded-lg flex flex-col sm:flex-row sm:justify-between sm:items-center">
+                                            <span className="font-semibold text-gray-800">{u.name || 'Sans pseudo'}</span>
+                                            <span className="text-sm text-gray-500 break-all">{u.email}</span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="text-gray-400 italic">Aucun utilisateur trouvé.</p>
+                                )}
+                            </div>
                         </div>
 
                         {/* Section Stats (Exemple) */}
