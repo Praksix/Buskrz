@@ -61,6 +61,7 @@ public class ConcertServiceImpl implements ConcertService {
     @Override
     public Collection<Concert> getConcertsByCity(String city) {
         List<Concert> concertsInCity = new ArrayList<>();
+        java.time.LocalDate today = java.time.LocalDate.now();
 
         // Récupérer tous les lieux de la ville
         List<Lieu> lieuxInCity = lieuRepository.findAllByCity(city);
@@ -68,9 +69,10 @@ public class ConcertServiceImpl implements ConcertService {
         // Pour chaque lieu, récupérer tous les concerts
         for (Lieu lieu : lieuxInCity) {
             List<Concert> concertsInLieu = repository.findAllByLieuId(lieu.getId());
-            // Filtrer les concerts PENDING
+            // Filtrer les concerts PENDING et les concerts passés
             for (Concert concert : concertsInLieu) {
-                if (!"PENDING".equals(concert.getStatus())) {
+                if (!"PENDING".equals(concert.getStatus()) &&
+                        (concert.getDate() != null && !concert.getDate().isBefore(today))) {
                     concertsInCity.add(concert);
                 }
             }
