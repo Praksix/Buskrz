@@ -30,4 +30,5 @@ public interface ConcertService {
 
     public Collection<Concert> getConcertsByStatus(String status);
 
+    public void validateConcert(String id);
 }

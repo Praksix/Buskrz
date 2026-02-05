@@ -91,4 +91,18 @@ public class ConcertServiceImpl implements ConcertService {
         return repository.getConcertsByStatus(status);
     }
 
+    @Override
+    public void validateConcert(String id) {
+        Optional<Concert> concert = repository.findById(id);
+        if (concert.isPresent()) {
+            Concert c = concert.get();
+            c.setStatus("APPROVED");
+            repository.save(c);
+        } else {
+            throw new org.springframework.web.server.ResponseStatusException(
+                    org.springframework.http.HttpStatus.NOT_FOUND,
+                    "Concert introuvable");
+        }
+    }
+
 }

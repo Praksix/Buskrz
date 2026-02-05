@@ -175,17 +175,15 @@ function ConcertDetails() {
   const handleValidateConcert = async () => {
     if (!concert) return
     try {
-      const response = await fetch(`${API_URL}/api/v1/concerts/${concert.id}`, {
+      const response = await fetch(`${API_URL}/api/v1/concerts/${concert.id}/validate`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ ...concert, status: 'VALIDATED' })
+        }
       })
 
       if (response.ok) {
-        navigate('/admin')
+        setConcert({ ...concert, status: 'APPROVED' })
       } else {
         alert('Erreur lors de la validation du concert')
       }

@@ -83,7 +83,7 @@ function LieuDetails() {
   const handleValidateLieu = async () => {
     if (!lieu) return
     try {
-      const response = await fetch(`${API_URL}/api/v1/lieux/${lieu.id}/validate`, {
+      const response = await fetch(`${API_URL}/api/v1/lieux/validate/${lieu.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
