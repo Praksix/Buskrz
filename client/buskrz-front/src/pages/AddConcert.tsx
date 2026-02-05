@@ -412,31 +412,13 @@ function AddConcert() {
                     />
                   </div>
                   <div className="flex-1 w-full">
-                    <select
+                    <input
+                      type="text"
                       value={artist.genre}
                       onChange={(e) => handleArtistChange(index, 'genre', e.target.value)}
-                      className="w-full px-4 py-2 bg-white/24 text-white rounded-lg focus:ring-2 focus:ring-[#CE5526] focus:border-transparent outline-none transition-all"
-                    >
-                      <option value="">Genre</option>
-                      <option value="Rock">Rock</option>
-                      <option value="Punk">Punk</option>
-                      <option value="Pop">Pop</option>
-                      <option value="Jazz">Jazz</option>
-                      <option value="Hip-Hop">Hip-Hop</option>
-                      <option value="Électro">Électro</option>
-                      <option value="Techno">Techno</option>
-                      <option value="Metal">Metal</option>
-                      <option value="Reggae">Reggae</option>
-                      <option value="Blues">Blues</option>
-                      <option value="Classique">Classique</option>
-                      <option value="Folk">Folk</option>
-                      <option value="R&B">R&B</option>
-                      <option value="Soul">Soul</option>
-                      <option value="Funk">Funk</option>
-                      <option value="Indie">Indie</option>
-                      <option value="Alternatif">Alternatif</option>
-                      <option value="Autre">Autre</option>
-                    </select>
+                      placeholder="Genre (ex: Rock, Punk, Pop...)"
+                      className="w-full bg-white/24 px-4 py-2 text-white rounded-lg focus:ring-2 focus:ring-[#CE5526] focus:border-transparent outline-none transition-all"
+                    />
                   </div>
                   {artistList.length > 1 && (
                     <button
