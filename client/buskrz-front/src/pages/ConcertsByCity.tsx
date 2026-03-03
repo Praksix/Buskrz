@@ -401,7 +401,7 @@ function ConcertsByCity() {
                     <img
                       src={getImageUrl(concert.image)}
                       alt={concert.name}
-                      className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                      className="absolute inset-0 w-full h-full object-cover rounded-l-lg"
                     />
                     {/* Like Button on Image */}
                     <div className="absolute top-2 right-2 z-10">

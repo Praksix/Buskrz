@@ -1,7 +1,7 @@
 package com.praksix.buskrz.config;
 
 import java.util.Arrays;
-
+import org.springframework.security.config.Customizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +33,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .headers(headers -> headers
+                        .contentSecurityPolicy(csp -> csp
+                                .policyDirectives("default-src 'self'"))
+                        .frameOptions(frame -> frame.deny())
+                        .contentTypeOptions(Customizer.withDefaults()))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         // Autoriser les dispatches FORWARD et ERROR (pour les pages d'erreur)
@@ -41,7 +46,7 @@ public class SecurityConfig {
                                 "/api/v1/concerts/**",
                                 "/api/v1/lieux/**",
                                 "/api/v1/artistes/**",
-                                "/api/v1/files/**", // 🖼️ Endpoints pour upload/download d'images
+                                "/api/v1/files/**", // Endpoints pour upload/download d'images
                                 "/api/v1/artist-find-or-create", // Whitelist artist creation endpoint
                                 "/api/v1/auth/register", // Seulement register (pas /auth/**)
                                 "/api/v1/auth/authenticate", // Seulement authenticate (pas /auth/**)
@@ -62,9 +67,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("http://localhost:5173", "http://51.75.24.241:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
