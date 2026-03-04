@@ -9,7 +9,7 @@ interface Concert {
     id: string;
     name: string;
     date: string;
-    ville?: string;
+    lieuId?: string;
 }
 
 interface Lieu {
@@ -163,7 +163,7 @@ const AdminDashboard: React.FC = () => {
                                         >
                                             <div>
                                                 <div className="font-semibold text-gray-800 group-hover:text-[#CE5526] transition-colors">{concert.name}</div>
-                                                <div className="text-sm text-gray-500">{concert.date} à {concert.ville || 'Ville inconnue'}</div>
+                                                <div className="text-sm text-gray-500">{concert.date} à {lieux.find(l => l.id === concert.lieuId)?.city || 'Ville inconnue'}</div>
                                             </div>
                                             <span className="text-gray-400">→</span>
                                         </div>
