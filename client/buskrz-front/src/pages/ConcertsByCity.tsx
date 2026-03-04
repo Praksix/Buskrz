@@ -471,29 +471,11 @@ function ConcertsByCity() {
                         })}
                       </div>
                     </div>
-
-
-
                     {/* Date et heure */}
                     <div className="flex items-center gap-2">
 
                       <p className="text-white/80 text-left"> {concert ? formatDate(concert.date) : `Concert paq trouvé`}</p><p className='text-white'>/</p><p className="text-white/80 pr-2">{formatTime(concert.time)}</p>
                     </div>
-
-                    {/* Prix 
-                {concert.prix && (
-                  <div className="flex items-center gap-2 mb-2">
-                    
-                    <p className="text-white/80">{concert.prix}€</p>
-                  </div>
-                )}*/}
-
-                    {/* Description 
-                //{concert.description && (
-                  <p className="text-white/70 text-sm mt-3 mb-3 line-clamp-2">
-                    {concert.description}
-                  </p>
-                )}*/}
                     {/* Lieu du concert */}
                     <div className="mb-3">
 
