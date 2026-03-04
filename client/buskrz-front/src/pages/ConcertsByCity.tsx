@@ -235,14 +235,24 @@ function ConcertsByCity() {
         }
 
         // 🎯 ÉTAPE 5 : Convertir la réponse en JSON
-        const concertsData = await response.json()
-        setConcerts(concertsData)
+        const concertsData: Concert[] = await response.json()
+
+        // 🎯 ÉTAPE 5.1 : Trier les concerts par ordre chronologique
+        const sortedConcerts = [...concertsData].sort((a, b) => {
+          // Comparer les dates d'abord (YYYY-MM-DD)
+          const dateCompare = a.date.localeCompare(b.date)
+          if (dateCompare !== 0) return dateCompare
+          // Si même date, comparer les heures (HH:MM:SS)
+          return a.time.localeCompare(b.time)
+        })
+
+        setConcerts(sortedConcerts)
 
         // 🎯 ÉTAPE 6 : Récupérer les détails des lieux et artistes
-        const lieuxData = await fetchAllLieux(concertsData)
+        const lieuxData = await fetchAllLieux(sortedConcerts)
         setLieux(lieuxData)
 
-        const artistesData = await fetchAllArtistes(concertsData)
+        const artistesData = await fetchAllArtistes(sortedConcerts)
         setArtistes(artistesData)
 
       } catch (err) {
