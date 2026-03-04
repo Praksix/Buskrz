@@ -1,19 +1,17 @@
-// src/components/ProtectedRoute.tsx
 import React from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const ProtectedRoute: React.FC = () => {
   const { isAuthenticated } = useAuth();
-  const location = useLocation();
 
-  // Si l'utilisateur n'est pas authentifié, rediriger vers la page de connexion
+  // Si l'utilisateur n'est pas connecté
   if (!isAuthenticated) {
-    // Stocker l'URL actuelle pour y rediriger après connexion
-    return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
+    // Rediriger vers la page de login
+    return <Navigate to="/login" replace />;
   }
 
-  // Si l'utilisateur est authentifié, afficher le contenu de la route
+  // Si l'utilisateur est connecté, afficher la route enfant
   return <Outlet />;
 };
 
