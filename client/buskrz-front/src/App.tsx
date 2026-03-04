@@ -10,17 +10,24 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import AdminDashboard from './pages/AdminDashboard'
 import AdminRoute from './components/AdminRoute'
+import ProtectedRoute from './components/ProtectedRoute'
 import LieuDetails from './pages/LieuDetails'
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/add-concert" element={<AddConcert />} />
-      <Route path="/add-lieu" element={<AddLieu />} />
+
+      {/* Routes protégées */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/add-concert" element={<AddConcert />} />
+        <Route path="/add-lieu" element={<AddLieu />} />
+        <Route path="/concerts/liked" element={<Concertsliked />} />
+      </Route>
+
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/concerts/liked" element={<Concertsliked />} />
+
       {/* Route dynamique avec paramètre :ville */}
       <Route path="/concerts/:ville" element={<ConcertsByCity />} />
       <Route path="/concert/:id" element={<ConcertDetails />} />
