@@ -379,7 +379,7 @@ function AddConcert() {
           <form onSubmit={handleSubmit} className="space-y-6 ">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
-                Nom du concert *
+                Nom du concert 
               </label>
               <input
                 type="text"
@@ -387,7 +387,6 @@ function AddConcert() {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                required
                 className="w-full bg-white/24 px-4 py-2 text-white rounded-lg focus:ring-2 focus:ring-[#CE5526] focus:border-transparent outline-none transition-all"
                 placeholder="Ex: Festival Rock 2024"
               />
