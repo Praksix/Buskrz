@@ -313,7 +313,7 @@ function AddConcert() {
 
       if (response.ok) {
         // 🎉 Message de succès avec info sur les artistes créés
-        let successMsg = 'Concert ajouté avec succès !';
+        let successMsg = 'Concert proposé avec succès ! Il est en cours de validation';
         if (createdArtistes.length > 0) {
           successMsg += ` Artiste(s) créé(s) : ${createdArtistes.join(', ')}`;
         }
@@ -379,7 +379,7 @@ function AddConcert() {
           <form onSubmit={handleSubmit} className="space-y-6 ">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
-                Nom du concert 
+                Nom du concert
               </label>
               <input
                 type="text"

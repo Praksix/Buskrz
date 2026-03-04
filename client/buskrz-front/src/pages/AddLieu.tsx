@@ -146,7 +146,7 @@ function AddLieu() {
 
       setMessage({
         type: 'success',
-        text: 'Lieu ajouté avec succès !',
+        text: 'Lieu proposé avec succès ! Il est en cours de validation',
       });
       setFormData(initialForm);
       // 🖼️ Réinitialiser l'image aussi
