@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 import com.praksix.buskrz.model.Concert;
 import com.praksix.buskrz.service.ConcertService;
@@ -33,7 +34,7 @@ public class ConcertController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createConcert(@RequestBody Concert concert) {
+    public void createConcert(@Valid @RequestBody Concert concert) {
         concertService.createConcert(concert);
     }
 
@@ -44,7 +45,7 @@ public class ConcertController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateConcert(@PathVariable String id, @RequestBody Concert concert) {
+    public void updateConcert(@PathVariable String id, @Valid @RequestBody Concert concert) {
         // pas d'utilisation de l'id dans le body?
         concertService.updateConcert(concert);
     }

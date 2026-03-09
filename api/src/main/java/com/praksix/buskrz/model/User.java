@@ -13,12 +13,14 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 
 @Getter
 @Setter
@@ -27,21 +29,28 @@ import lombok.Setter;
 @AllArgsConstructor
 @Document(collection = "users")
 public class User implements UserDetails {
-    
+
     @Id
     private String id;
+
+    @NotBlank(message = "Le nom est obligatoire")
     private String name;
+
+    @NotBlank(message = "L'email est obligatoire")
+    @Email(message = "L'email doit être valide")
     private String email;
+
+    @NotBlank(message = "Le mot de passe est obligatoire")
     private String password;
+
     private String role;
 
-    
     @Builder.Default
     private List<String> concertsLikes = new ArrayList<>();
-    
+
     @CreatedDate
     private LocalDateTime createdAt;
-    
+
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
