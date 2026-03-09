@@ -184,6 +184,8 @@ function ConcertDetails() {
 
       if (response.ok) {
         setConcert({ ...concert, status: 'APPROVED' })
+        // Rediriger vers l'admin ou l'accueil après validation
+        navigate(fromAdmin ? '/admin' : '/')
       } else {
         alert('Erreur lors de la validation du concert')
       }
