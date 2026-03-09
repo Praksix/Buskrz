@@ -13,16 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 import com.praksix.buskrz.model.Artiste;
 import com.praksix.buskrz.service.ArtisteService;
 
-
-
 @RestController
 @RequestMapping("/api/v1/artistes")
 public class ArtisteController {
-    
+
     @Autowired
     ArtisteService artisteService;
 
@@ -39,7 +38,7 @@ public class ArtisteController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateArtiste(@PathVariable String id, @RequestBody Artiste artiste) {
+    public void updateArtiste(@PathVariable String id, @Valid @RequestBody Artiste artiste) {
         // pas d'utilisation de l'id dans le body?
         artisteService.updateArtiste(artiste);
     }
@@ -52,9 +51,8 @@ public class ArtisteController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAllArtiste() { //mettre deleteAllArtiste au pluriel pour être cohérent avec en dessous
+    public void deleteAllArtiste() { // mettre deleteAllArtiste au pluriel pour être cohérent avec en dessous
         artisteService.deleteAllArtistes();
     }
-   
-    
+
 }

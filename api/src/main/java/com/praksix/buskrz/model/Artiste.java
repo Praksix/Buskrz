@@ -5,17 +5,22 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotBlank;
 
 @Document(collection = "artistes")
 public class Artiste {
-    
+
     @Id
     private String id;
+
+    @NotBlank(message = "Le nom de l'artiste est obligatoire")
     private String name;
+
     private List<String> genres;
 
     // Constructeur par défaut
-    public Artiste() {}
+    public Artiste() {
+    }
 
     // Constructeur avec paramètres
     public Artiste(String id, String name, List<String> genres) {

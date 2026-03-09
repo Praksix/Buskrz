@@ -2,14 +2,21 @@ package com.praksix.buskrz.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.validation.constraints.NotBlank;
 
 @Document(collection = "lieux")
 public class Lieu {
 
     @Id
     private String id;
+
+    @NotBlank(message = "Le nom est obligatoire")
     private String name;
+
+    @NotBlank(message = "La ville est obligatoire")
     private String city;
+
+    @NotBlank(message = "L'adresse est obligatoire")
     private String adresse;
     private String website;
     private String status;

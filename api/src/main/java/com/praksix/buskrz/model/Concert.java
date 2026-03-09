@@ -5,6 +5,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,11 +16,21 @@ public class Concert {
 
     @Id
     private String id;
+
+   
     private String name;
+
     private List<String> artisteIds = new ArrayList<>();
+
+    @NotBlank(message = "Le lieu est obligatoire")
     private String lieuId;
+
+    @NotNull(message = "La date est obligatoire")
     private LocalDate date;
+
     private LocalTime time;
+
+    
     private String prix;
     private String description;
     private String image;

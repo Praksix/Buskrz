@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 import com.praksix.buskrz.model.Lieu;
 import com.praksix.buskrz.service.LieuService;
@@ -38,7 +39,7 @@ public class LieuController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createLieu(@RequestBody Lieu lieu) {
+    public void createLieu(@Valid @RequestBody Lieu lieu) {
         lieuService.createLieu(lieu);
     }
 
@@ -49,7 +50,7 @@ public class LieuController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateLieu(@PathVariable String id, @RequestBody Lieu lieu) {
+    public void updateLieu(@PathVariable String id, @Valid @RequestBody Lieu lieu) {
         lieuService.updateLieu(lieu);
     }
 

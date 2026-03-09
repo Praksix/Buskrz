@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.Valid;
 
 import com.praksix.buskrz.model.Concert;
 import com.praksix.buskrz.model.User;
@@ -25,21 +26,19 @@ import com.praksix.buskrz.service.ConcertService;
 import com.praksix.buskrz.service.JwtService;
 import com.praksix.buskrz.service.UserService;
 
-
-
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
-    
+
     @Autowired
     UserService userService;
-    
+
     @Autowired
     ConcertService concertService;
-    
+
     @Autowired
     UserRepository userRepository;
-    
+
     @Autowired
     JwtService jwtService;
 
@@ -49,10 +48,10 @@ public class UserController {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new RuntimeException("Token manquant ou invalide");
         }
-        
+
         String token = authHeader.substring(7);
         String email = jwtService.extractUsername(token);
-        
+
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
     }
@@ -65,7 +64,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createUser(@RequestBody User user) {
+    public void createUser(@Valid @RequestBody User user) {
         userService.createUser(user);
     }
 
@@ -76,7 +75,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUser(@PathVariable String id, @RequestBody User user) {
+    public void updateUser(@PathVariable String id, @Valid @RequestBody User user) {
         userService.updateUser(user);
     }
 
@@ -115,6 +114,5 @@ public class UserController {
                 .map(Optional::get)
                 .collect(Collectors.toList());
     }
-   
-    
+
 }
