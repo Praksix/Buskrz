@@ -1,5 +1,5 @@
 # Étape 1: Build de l'app React avec Vite
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 # Installer les dépendances système nécessaires
 RUN apk add --no-cache libc6-compat
