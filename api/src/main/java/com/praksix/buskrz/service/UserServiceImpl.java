@@ -1,4 +1,6 @@
 package com.praksix.buskrz.service;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +13,7 @@ import com.praksix.buskrz.repository.UserRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
-    
+
     @Autowired
     UserRepository repository;
 
@@ -50,8 +52,13 @@ public class UserServiceImpl implements UserService {
         Optional<User> userOpt = repository.findById(userId);
         if (userOpt.isPresent()) {
             User user = userOpt.get();
-            if (!user.getConcertsLikes().contains(concertId)) {
-                user.getConcertsLikes().add(concertId);
+            List<String> likes = user.getConcertsLikes();
+            if (likes == null) {
+                likes = new ArrayList<>();
+                user.setConcertsLikes(likes);
+            }
+            if (!likes.contains(concertId)) {
+                likes.add(concertId);
                 repository.save(user);
             }
         }

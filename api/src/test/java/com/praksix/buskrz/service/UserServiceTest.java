@@ -14,6 +14,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
+import com.praksix.buskrz.repository.UserRepository;
+import static org.mockito.Mockito.*;
 
 import com.praksix.buskrz.model.User;
 
@@ -26,6 +28,9 @@ class UserServiceTest {
 
     @MockBean
     private GridFsTemplate gridFsTemplate; // Requis car FileStorageService est chargé dans le contexte
+
+    @MockBean
+    private UserRepository userRepository;
 
     @Test
     @Disabled("MongoDB authentication required - to be fixed")
@@ -83,5 +88,30 @@ class UserServiceTest {
 
         // Nettoyer
         userService.deleteUser(updatedUser.getId());
+    }
+
+    @Test
+    void testAddConcertToLikesHandlesNullList() {
+        // Simuler un utilisateur dont la liste de likes est nulle (cas des anciens
+        // utilisateurs)
+        String userId = "user123";
+        String concertId = "concert456";
+
+        User user = new User();
+        user.setId(userId);
+        user.setConcertsLikes(null); // On force à null pour simuler l'état en base
+
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        // Appeler la méthode à tester
+        userService.addConcertToLikes(userId, concertId);
+
+        // Vérifier que la liste a été initialisée et que le concert a été ajouté
+        assertNotNull(user.getConcertsLikes());
+        assertTrue(user.getConcertsLikes().contains(concertId));
+
+        // Vérifier que repository.save a bien été appelé
+        verify(userRepository, times(1)).save(user);
     }
 }
