@@ -53,7 +53,13 @@ public class SecurityConfig {
                                 "/api/health/**",
                                 "/api/v1/health/**",
                                 "/health/**",
-                                "/actuator/**")
+                                "/actuator/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/index.html",
+                                "/webjars/**")
                         .permitAll()
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN") // Sécurisation des routes admin
                         .anyRequest().authenticated())

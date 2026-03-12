@@ -58,7 +58,7 @@ public class ConcertController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAllConcert() { // mettre deleteAllConcert au pluriel pour être cohérent avec en dessous
+    public void deleteAllConcert() { 
         concertService.deleteAllConcerts();
     }
 

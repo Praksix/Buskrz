@@ -48,6 +48,13 @@ public class User implements UserDetails {
     @Builder.Default
     private List<String> concertsLikes = new ArrayList<>();
 
+    public List<String> getConcertsLikes() {
+        if (concertsLikes == null) {
+            concertsLikes = new ArrayList<>();
+        }
+        return concertsLikes;
+    }
+
     @CreatedDate
     private LocalDateTime createdAt;
 
